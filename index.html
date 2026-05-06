@@ -1168,6 +1168,10 @@
           <option value="">Selecionar...</option>
         </select>
       </div>
+      <div id="campo-data-fechamento" style="display:none">
+        <label>Data do fechamento *</label>
+        <input type="date" id="lead-data-fechamento">
+      </div>
       <div id="campo-motivo-perda" style="display:none">
         <label>Motivo da perda *</label>
         <input type="text" id="lead-motivo" placeholder="Por que o negócio não foi fechado?">
@@ -1310,13 +1314,16 @@ function atualizarSubStatus() {
   const produto = document.getElementById('lead-produto').value;
   const subDiv = document.getElementById('campo-substatus');
   const motivoDiv = document.getElementById('campo-motivo-perda');
+  const dataFechDiv = document.getElementById('campo-data-fechamento');
   const subSel = document.getElementById('lead-substatus');
 
   subDiv.style.display = 'none';
   motivoDiv.style.display = 'none';
+  dataFechDiv.style.display = 'none';
 
   if (status === 'Fechado') {
     subDiv.style.display = 'block';
+    dataFechDiv.style.display = 'block';
     const opts = SUBSTATUS[produto] || SUBSTATUS[''];
     subSel.innerHTML = '<option value="">Selecionar...</option>' + opts.map(o => `<option value="${o}">${o}</option>`).join('');
   } else if (status === 'Negado') {
@@ -1507,6 +1514,8 @@ function abrirNovaIndicacao() {
   document.getElementById('campo-status').style.display = 'none';
   document.getElementById('campo-substatus').style.display = 'none';
   document.getElementById('campo-motivo-perda').style.display = 'none';
+  document.getElementById('campo-data-fechamento').style.display = 'none';
+  document.getElementById('lead-data-fechamento').value = '';
 
   const sel = document.getElementById('lead-parceiro');
   sel.innerHTML = '<option value="">Selecionar...</option>' + d.parceiros.map(p => {
@@ -1536,6 +1545,8 @@ function salvarIndicacao() {
   const status = editId ? document.getElementById('lead-status').value : 'Recebida';
   const substatus = document.getElementById('lead-substatus').value;
   const motivo = document.getElementById('lead-motivo').value.trim();
+  const dataFechamentoInput = document.getElementById('lead-data-fechamento').value;
+  const dataFechamento = dataFechamentoInput ? new Date(dataFechamentoInput + 'T12:00:00').toISOString() : null;
 
   if (!nome) { showToast('Informe o nome do cliente'); return; }
   if (!tel) { showToast('Informe o telefone'); return; }
@@ -1561,7 +1572,7 @@ function salvarIndicacao() {
       else if (['Recebida','Em contato'].includes(status)) resp = 'Alexsandra';
       // Só atualiza createdAt se o usuário alterou a data explicitamente
       const createdAtFinal = dataInput ? dataIso : lead.createdAt;
-      d.leads[idx] = { ...lead, nome, telefone: tel, parceiro, produto, valor, categoria, regime, operacao, perfil, entrada, obs, status, substatus, motivoPerda: motivo, responsavel: resp, createdAt: createdAtFinal };
+      d.leads[idx] = { ...lead, nome, telefone: tel, parceiro, produto, valor, categoria, regime, operacao, perfil, entrada, obs, status, substatus, motivoPerda: motivo, dataFechamento: status === 'Fechado' ? (dataFechamento || lead.dataFechamento || agora) : lead.dataFechamento, responsavel: resp, createdAt: createdAtFinal };
     }
   } else {
     d.leads.push({
@@ -1619,6 +1630,7 @@ function editarLead(id) {
   document.getElementById('lead-status').value = lead.status;
   document.getElementById('campo-status').style.display = 'block';
   document.getElementById('lead-motivo').value = lead.motivoPerda || '';
+  document.getElementById('lead-data-fechamento').value = lead.dataFechamento ? lead.dataFechamento.substring(0,10) : '';
 
   const sel = document.getElementById('lead-parceiro');
   sel.innerHTML = '<option value="">Selecionar...</option>' + d.parceiros.map(p => {
@@ -1708,6 +1720,7 @@ function abrirDetalhe(id) {
       <div class="detail-row"><span class="detail-key">Data da indicação</span><span class="detail-value" style="display:flex;align-items:center;gap:8px">${formatDate(lead.createdAt)}<button onclick="editarData('${lead.id}')" style="background:none;border:none;color:var(--gold);font-size:12px;cursor:pointer;padding:0;font-family:'Inter',sans-serif">✏️ editar</button></span></div>
       ${lead.obs ? `<div class="detail-row"><span class="detail-key">Obs.</span><span class="detail-value" style="text-align:right;max-width:60%">${lead.obs}</span></div>` : ''}
       ${lead.motivoPerda ? `<div class="detail-row"><span class="detail-key">Motivo perda</span><span class="detail-value">${lead.motivoPerda}</span></div>` : ''}
+      ${lead.dataFechamento ? `<div class="detail-row"><span class="detail-key">Data fechamento</span><span class="detail-value">${new Date(lead.dataFechamento).toLocaleDateString('pt-BR')}</span></div>` : ''}
     </div>
     <div class="detail-section">
       <div class="detail-section-title">Linha do tempo</div>
@@ -1795,20 +1808,24 @@ function renderIndicacoes() {
   let leads = [...d.leads].sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
   if (filtroAtivo !== 'todos') leads = leads.filter(l => l.status === filtroAtivo);
   if (filtroParceiro) {
-    // incluir leads do parceiro direto OU vinculados a ele
     const vinculados = d.parceiros.filter(p => p.master === filtroParceiro).map(p => p.id);
     leads = leads.filter(l => l.parceiro === filtroParceiro || vinculados.includes(l.parceiro));
   }
   const el = document.getElementById('lista-indicacoes');
+
+  // Card de volume total
+  const volTotal = leads.reduce((s,l) => s + (parseFloat(l.valor)||0), 0);
+  const cardVolume = volTotal > 0 ? `
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between">
+      <span style="font-size:11px;color:var(--text3);font-family:'Inter',sans-serif;text-transform:uppercase;letter-spacing:.08em;font-weight:500">Volume total</span>
+      <span style="font-size:16px;font-weight:600;color:var(--gold2);font-family:'Inter',sans-serif">${brl(volTotal)}</span>
+    </div>` : '';
+
   if (!leads.length) {
-    el.innerHTML = `<div class="empty"><div class="empty-icon">🔍</div><div class="empty-text">Nenhuma indicação encontrada</div><div class="empty-sub">Tente outro filtro ou registre uma nova</div></div>`;
+    el.innerHTML = `${cardVolume}<div class="empty"><div class="empty-icon">🔍</div><div class="empty-text">Nenhuma indicação encontrada</div><div class="empty-sub">Tente outro filtro ou registre uma nova</div></div>`;
     return;
   }
-  // contador
-  const total = leads.length;
-  const volTotal = leads.filter(l=>l.status==='Fechada').reduce((s,l)=>s+(parseFloat(l.valor)||0),0);
-  const resumo = `<div style="font-size:12px;color:var(--text3);margin-bottom:10px">${total} indicação(ões)${volTotal>0?' · <strong style=color:var(--gold2)>'+brl(volTotal)+' fechados</strong>':''}</div>`;
-  el.innerHTML = resumo + leads.map(l => buildLeadCard(l, d)).join('');
+  el.innerHTML = cardVolume + leads.map(l => buildLeadCard(l, d)).join('');
 }
 
 
