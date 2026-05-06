@@ -1661,11 +1661,11 @@ function abrirDetalhe(id) {
   const TL_RESP = {
     'Recebida': 'Alexsandra', 'Em contato': 'Alexsandra',
     'Qualificada': 'Jefferson', 'Agendada': 'Jefferson', 'Em negociação': 'Jefferson',
-    'Fechada': 'Jefferson', 'Futuro': 'Jefferson', 'Negada': 'Jefferson'
+    'Fechado': 'Jefferson', 'Futuro': 'Jefferson', 'Negado': 'Jefferson'
   };
   const TL_ICON = {
     'Recebida': '📥', 'Em contato': '💬', 'Qualificado': '📅',
-    'Em negociação': '🤝', 'Fechada': '✅', 'Futuro': '⏳', 'Negada': '❌'
+    'Em negociação': '🤝', 'Fechado': '✅', 'Futuro': '⏳', 'Negado': '❌'
   };
 
   let historicoHtml = '';
@@ -1770,8 +1770,8 @@ function buildLeadCard(lead, d) {
 function renderPainel() {
   const d = getData();
   const total = d.leads.length;
-  const abertas = d.leads.filter(l => !['Fechada','Negada'].includes(l.status)).length;
-  const fechadas = d.leads.filter(l => l.status === 'Fechada').length;
+  const abertas = d.leads.filter(l => !['Fechado','Negado'].includes(l.status)).length;
+  const fechadas = d.leads.filter(l => l.status === 'Fechado').length;
 
   document.getElementById('stats-grid').innerHTML = `
     <div class="stat-card stat-clickable" onclick="irParaIndicacoes('todos')" title="Ver todas as indicações">
@@ -1780,7 +1780,7 @@ function renderPainel() {
     <div class="stat-card stat-clickable" onclick="irParaIndicacoes('aberto')" title="Ver indicações em aberto">
       <div class="stat-value">${abertas}</div><div class="stat-label">Em aberto</div>
     </div>
-    <div class="stat-card stat-clickable" onclick="irParaIndicacoes('Fechada')" title="Ver fechamentos">
+    <div class="stat-card stat-clickable" onclick="irParaIndicacoes('Fechado')" title="Ver fechamentos">
       <div class="stat-value">${fechadas}</div><div class="stat-label">Fechadas</div>
     </div>
   `;
@@ -1869,7 +1869,7 @@ function irParaIndicacoes(filtro) {
     b.classList.remove('active');
     const txt = b.textContent.trim();
     if (filtro === 'todos' && txt === 'Todas') b.classList.add('active');
-    else if (filtro === 'Fechada' && txt === 'Fechada') b.classList.add('active');
+    else if (filtro === 'Fechado' && txt === 'Fechado') b.classList.add('active');
     else if (filtro === 'aberto' && txt === 'Todas') b.classList.add('active');
   });
 
@@ -1879,7 +1879,7 @@ function irParaIndicacoes(filtro) {
   // Se "aberto", filtrar manualmente após render
   if (filtro === 'aberto') {
     const d = getData();
-    const abertos = d.leads.filter(l => !['Fechada','Negada'].includes(l.status));
+    const abertos = d.leads.filter(l => !['Fechado','Negado'].includes(l.status));
     const el = document.getElementById('lista-indicacoes');
     el.innerHTML = (abertos.length === 0
       ? '<div class="empty"><div class="empty-icon">🔍</div><div class="empty-text">Nenhuma indicação em aberto</div></div>'
@@ -1905,7 +1905,7 @@ function irParaResponsavel(resp) {
   // Filtrar por responsável
   const d = getData();
   const leads = d.leads
-    .filter(l => (l.responsavel || 'Alexsandra') === resp && !['Fechada','Negada'].includes(l.status))
+    .filter(l => (l.responsavel || 'Alexsandra') === resp && !['Fechado','Negado'].includes(l.status))
     .sort((a,b) => new Date(b.createdAt)-new Date(a.createdAt));
   const el = document.getElementById('lista-indicacoes');
   const resumo = `<div style="font-size:12px;color:var(--text3);margin-bottom:10px">${leads.length} indicação(ões) em aberto com <strong style="color:var(--text2)">${resp}</strong></div>`;
@@ -2011,8 +2011,8 @@ function toggleMesPicker() {
   // Coletar todos os meses que têm leads
   d.leads.forEach(l => {
     let dt;
-    if (l.status === 'Fechada') {
-      const h = (l.historico||[]).find(x => x.status === 'Fechada');
+    if (l.status === 'Fechado') {
+      const h = (l.historico||[]).find(x => x.status === 'Fechado');
       dt = h ? new Date(h.data) : new Date(l.createdAt);
     } else {
       dt = new Date(l.createdAt);
@@ -2022,7 +2022,7 @@ function toggleMesPicker() {
     const key = ano + '-' + mes;
     if (!mesesMap[key]) mesesMap[key] = { ano, mes, count: 0, fechados: 0 };
     mesesMap[key].count++;
-    if (l.status === 'Fechada') mesesMap[key].fechados++;
+    if (l.status === 'Fechado') mesesMap[key].fechados++;
   });
 
   // Garantir que o mês atual esteja sempre disponível
@@ -2308,16 +2308,16 @@ function renderRelatorio() {
     if (!leadsDoMaster.length) return;
     totalParceiros++;
 
-    const fechados = leadsDoMaster.filter(l => l.status === 'Fechada');
-    const emAberto = leadsDoMaster.filter(l => !['Fechada','Negada'].includes(l.status));
+    const fechados = leadsDoMaster.filter(l => l.status === 'Fechado');
+    const emAberto = leadsDoMaster.filter(l => !['Fechado','Negado'].includes(l.status));
 
     let linhas = leadsDoMaster.map((l, i) => {
       const corretor = d.parceiros.find(p => p.id === l.parceiro && p.tipo === 'vinculado');
       const corretorStr = corretor ? ` (${corretor.nome})` : '';
       const nome = l.nome + corretorStr;
       let statusStr = l.status;
-      if (l.status === 'Fechada') statusStr = '✅ Fechada';
-      else if (l.status === 'Negada') statusStr = '❌ Negada';
+      if (l.status === 'Fechado') statusStr = '✅ Fechado';
+      else if (l.status === 'Negado') statusStr = '❌ Negado';
       else if (l.status === 'Em negociação') statusStr = '🤝 Em negociação';
       else if (l.status === 'Qualificado') statusStr = '📅 Qualificado';
       else if (l.status === 'Em contato') statusStr = '💬 Em contato';
@@ -2326,9 +2326,9 @@ function renderRelatorio() {
       return `*${i+1}. ${nome}*\n    ${statusStr}${obs ? '\n    📝 ' + obs : ''}`;
     }).join('\n\n');
 
-    const fechadosCount = leadsDoMaster.filter(l => l.status === 'Fechada').length;
-    const emAbertoCount = leadsDoMaster.filter(l => !['Fechada','Negada'].includes(l.status)).length;
-    const volFechado = leadsDoMaster.filter(l => l.status === 'Fechada').reduce((s,l) => s+(parseFloat(l.valor)||0),0);
+    const fechadosCount = leadsDoMaster.filter(l => l.status === 'Fechado').length;
+    const emAbertoCount = leadsDoMaster.filter(l => !['Fechado','Negado'].includes(l.status)).length;
+    const volFechado = leadsDoMaster.filter(l => l.status === 'Fechado').reduce((s,l) => s+(parseFloat(l.valor)||0),0);
 
     const destaqueVol = volFechado > 0 ? `\n💰 Volume fechado: ${brl(volFechado)}` : '';
     const destaqueFech = fechadosCount > 0
@@ -2468,8 +2468,8 @@ function renderDashboard() {
 
   // Leads fechados no mês selecionado
   const fechadosMes = d.leads.filter(l => {
-    if (l.status !== 'Fechada') return false;
-    const hist = (l.historico || []).find(h => h.status === 'Fechada');
+    if (l.status !== 'Fechado') return false;
+    const hist = (l.historico || []).find(h => h.status === 'Fechado');
     if (!hist) return false;
     const dt = new Date(hist.data);
     return dt.getMonth() === dashMes && dt.getFullYear() === dashAno;
@@ -2517,8 +2517,8 @@ function renderDashboard() {
 
   // Helper: data relevante de um lead (usa hist de fechamento se fechado, senão createdAt)
   function dataLead(l) {
-    if (l.status === 'Fechada') {
-      const h = (l.historico||[]).find(x => x.status === 'Fechada');
+    if (l.status === 'Fechado') {
+      const h = (l.historico||[]).find(x => x.status === 'Fechado');
       if (h) return new Date(h.data);
     }
     return new Date(l.createdAt);
@@ -2530,16 +2530,14 @@ function renderDashboard() {
     return dt.getMonth() === dashMes && dt.getFullYear() === dashAno;
   });
 
-  // Funil — filtrado pelo mês selecionado
-  const STATUS_ORDER = ['Recebida','Em contato','Qualificada','Agendada','Em negociação','Fechado','Futuro','Negado'];
+  // Funil — todos os leads ativos, independente do mês
+  const STATUS_FUNIL = ['Agendada','Em negociação','Fechado'];
   const STATUS_COLOR = {
-    'Recebida':'var(--text3)', 'Em contato':'var(--blue)',
-    'Qualificado':'var(--purple)', 'Em negociação':'var(--amber)',
-    'Fechada':'var(--green)', 'Futuro':'var(--purple)', 'Negada':'var(--red)'
+    'Agendada':'var(--green)', 'Em negociação':'var(--amber)', 'Fechado':'var(--green)'
   };
   let funilHtml = '';
-  STATUS_ORDER.forEach(st => {
-    const leadsNeste = leadsMes.filter(l => l.status === st);
+  STATUS_FUNIL.forEach(st => {
+    const leadsNeste = d.leads.filter(l => l.status === st);
     const vol = leadsNeste.reduce((s,l) => s + (parseFloat(l.valor)||0), 0);
     const clicavel = leadsNeste.length > 0;
     funilHtml += `<div class="funil-row${clicavel ? ' funil-row-link' : ''}"
@@ -2558,8 +2556,8 @@ function renderDashboard() {
   document.getElementById('dash-funil').innerHTML = funilHtml;
 
   // Responsáveis — leads em aberto do mês
-  const alexLeads = leadsMes.filter(l => (!l.responsavel || l.responsavel === 'Alexsandra') && !['Fechada','Negada'].includes(l.status));
-  const jeffLeads = leadsMes.filter(l => l.responsavel === 'Jefferson' && !['Fechada','Negada'].includes(l.status));
+  const alexLeads = leadsMes.filter(l => (!l.responsavel || l.responsavel === 'Alexsandra') && !['Fechado','Negado'].includes(l.status));
+  const jeffLeads = leadsMes.filter(l => l.responsavel === 'Jefferson' && !['Fechado','Negado'].includes(l.status));
   document.getElementById('dash-resp').innerHTML = `
     <div class="resp-card alex stat-clickable" onclick="irParaResponsavel('Alexsandra')" title="Ver leads de Alexsandra">
       <div class="resp-name">Alexsandra</div>
@@ -2576,7 +2574,7 @@ function renderDashboard() {
   // Totais do mês
   const totalFechadosMes = fechadosMes.length;
   const totalVolMes = volTotal;
-  const totalAbertos = leadsMes.filter(l => !['Fechada','Negada'].includes(l.status)).length;
+  const totalAbertos = leadsMes.filter(l => !['Fechado','Negado'].includes(l.status)).length;
   const totalLeadsMes = leadsMes.length;
   const ticketMedio = totalFechadosMes > 0 ? totalVolMes / totalFechadosMes : 0;
   const taxaConversao = totalLeadsMes > 0 ? Math.round((totalFechadosMes/totalLeadsMes)*100) : 0;
@@ -2638,8 +2636,8 @@ function renderDashboard() {
 
   // Histórico por mês
   const histMap = {};
-  d.leads.filter(l => l.status === 'Fechada').forEach(l => {
-    const hist = (l.historico||[]).find(h => h.status === 'Fechada');
+  d.leads.filter(l => l.status === 'Fechado').forEach(l => {
+    const hist = (l.historico||[]).find(h => h.status === 'Fechado');
     if (!hist) return;
     const dt = new Date(hist.data);
     const key = MESES_PT[dt.getMonth()] + ' ' + dt.getFullYear();
