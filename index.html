@@ -1016,16 +1016,19 @@
           <span id="rel-status-label">Todos os status</span>
           <svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#6b6864" stroke-width="1.5" stroke-linecap="round"/></svg>
         </button>
-        <div id="rel-status-dropdown" style="display:none;position:absolute;z-index:100;top:100%;left:0;right:0;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);margin-top:4px;padding:8px;display:none;flex-direction:column;gap:4px">
+        <div id="rel-status-dropdown" style="display:none;position:absolute;z-index:100;top:100%;left:0;right:0;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);margin-top:4px;padding:6px;flex-direction:column;gap:2px">
           <div id="rel-status-checks">
-            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background=''" onclick="atualizarLabelStatus()"><input type="checkbox" value="Recebida" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Recebida</label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background=''" onclick="atualizarLabelStatus()"><input type="checkbox" value="Em contato" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Em contato</label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background=''" onclick="atualizarLabelStatus()"><input type="checkbox" value="Qualificada" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Qualificada</label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background=''" onclick="atualizarLabelStatus()"><input type="checkbox" value="Agendada" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Agendada</label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background=''" onclick="atualizarLabelStatus()"><input type="checkbox" value="Em negociação" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Em negociação</label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background=''" onclick="atualizarLabelStatus()"><input type="checkbox" value="Fechado" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Fechado</label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background=''" onclick="atualizarLabelStatus()"><input type="checkbox" value="Futuro" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Futuro</label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background=''" onclick="atualizarLabelStatus()"><input type="checkbox" value="Negado" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Negado</label>
+            <label id="lbl-todos-status" onclick="toggleTodosStatus()" style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gold2);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px;font-weight:600;border-bottom:1px solid var(--border);margin-bottom:4px">
+              <span style="width:14px;height:14px;border:1.5px solid var(--gold2);border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-size:10px" id="todos-check-icon"></span> Todos os status
+            </label>
+            <label class="status-check-lbl" style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onclick="atualizarLabelStatus()"><input type="checkbox" value="Recebida" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Recebida</label>
+            <label class="status-check-lbl" style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onclick="atualizarLabelStatus()"><input type="checkbox" value="Em contato" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Em contato</label>
+            <label class="status-check-lbl" style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onclick="atualizarLabelStatus()"><input type="checkbox" value="Qualificada" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Qualificada</label>
+            <label class="status-check-lbl" style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onclick="atualizarLabelStatus()"><input type="checkbox" value="Agendada" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Agendada</label>
+            <label class="status-check-lbl" style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onclick="atualizarLabelStatus()"><input type="checkbox" value="Em negociação" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Em negociação</label>
+            <label class="status-check-lbl" style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onclick="atualizarLabelStatus()"><input type="checkbox" value="Fechado" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Fechado</label>
+            <label class="status-check-lbl" style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onclick="atualizarLabelStatus()"><input type="checkbox" value="Futuro" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Futuro</label>
+            <label class="status-check-lbl" style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onclick="atualizarLabelStatus()"><input type="checkbox" value="Negado" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Negado</label>
           </div>
         </div>
       </div>
@@ -1289,7 +1292,7 @@ function showView(view, btn) {
   if (view === 'painel') renderPainel();
   if (view === 'indicacoes') { renderIndicacoes(); popularFiltroParceiro(); }
   if (view === 'parceiros') renderParceiros();
-  if (view === 'relatorio') { popularFiltroRelatorio(); renderRelatorio(); }
+  if (view === 'relatorio') { popularFiltroRelatorio(); document.getElementById('lista-relatorio').innerHTML = ''; }
 }
 
 function fecharModal(id) {
@@ -2305,8 +2308,16 @@ function leadNoPeriodo(lead, ini, fim) {
 
 function toggleStatusDropdown() {
   const dd = document.getElementById('rel-status-dropdown');
-  dd.style.display = dd.style.display === 'none' || dd.style.display === '' ? 'flex' : 'none';
+  const isOpen = dd.style.display === 'flex';
+  dd.style.display = isOpen ? 'none' : 'flex';
   dd.style.flexDirection = 'column';
+}
+
+function toggleTodosStatus() {
+  const checks = document.querySelectorAll('#rel-status-checks input[type=checkbox]');
+  const algumMarcado = Array.from(checks).some(c => c.checked);
+  checks.forEach(c => { c.checked = !algumMarcado; });
+  atualizarLabelStatus();
 }
 
 function atualizarLabelStatus() {
@@ -2314,6 +2325,13 @@ function atualizarLabelStatus() {
     const checks = document.querySelectorAll('#rel-status-checks input[type=checkbox]:checked');
     const selecionados = Array.from(checks).map(c => c.value);
     const label = document.getElementById('rel-status-label');
+    // Atualizar visual dos labels
+    document.querySelectorAll('.status-check-lbl').forEach(lbl => {
+      const cb = lbl.querySelector('input[type=checkbox]');
+      lbl.style.background = cb && cb.checked ? 'var(--gold-bg)' : '';
+      lbl.style.color = cb && cb.checked ? 'var(--gold2)' : 'var(--text)';
+      lbl.style.fontWeight = cb && cb.checked ? '600' : '';
+    });
     if (selecionados.length === 0) label.textContent = 'Todos os status';
     else if (selecionados.length === 1) label.textContent = selecionados[0];
     else label.textContent = selecionados.length + ' status selecionados';
@@ -2332,6 +2350,7 @@ document.addEventListener('click', function(e) {
 function renderRelatorio() {
   const d = getData();
   const el = document.getElementById('lista-relatorio');
+  el.innerHTML = ''; // limpa ao entrar na aba
   if (!d.parceiros.length) {
     el.innerHTML = `<div class="empty"><div class="empty-icon">📤</div><div class="empty-text">Nenhum parceiro cadastrado</div></div>`;
     return;
@@ -2355,11 +2374,12 @@ function renderRelatorio() {
   d.parceiros.filter(p => p.tipo === 'master' || p.tipo === 'independente').forEach(master => {
     if (relParceiroFiltro && master.id !== relParceiroFiltro) return;
     const vinculados = d.parceiros.filter(v => v.master === master.id).map(v => v.id);
+    const STATUS_REL_ORDER = ['Recebida','Em contato','Qualificada','Agendada','Em negociação','Fechado','Futuro','Negado'];
     const leadsDoMaster = d.leads.filter(l =>
       (l.parceiro === master.id || vinculados.includes(l.parceiro)) &&
       leadNoPeriodo(l, ini, fim) &&
       (relStatusFiltro.length === 0 || relStatusFiltro.includes(l.status))
-    );
+    ).sort((a,b) => STATUS_REL_ORDER.indexOf(a.status) - STATUS_REL_ORDER.indexOf(b.status));
     if (!leadsDoMaster.length) return;
     totalParceiros++;
 
