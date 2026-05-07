@@ -1010,18 +1010,24 @@
           <option value="todos">Todos</option>
         </select>
       </div>
-      <div>
+      <div style="position:relative">
         <label style="display:block;font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Status</label>
-        <select id="rel-status" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;padding:10px 14px;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6864' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;outline:none">
-          <option value="">Todos os status</option>
-          <option value="Em contato">Em contato</option>
-          <option value="Qualificada">Qualificada</option>
-          <option value="Agendada">Agendada</option>
-          <option value="Em negociação">Em negociação</option>
-          <option value="Fechado">Fechado</option>
-          <option value="Futuro">Futuro</option>
-          <option value="Negado">Negado</option>
-        </select>
+        <button type="button" id="rel-status-btn" onclick="toggleStatusDropdown()" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;padding:10px 14px;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center">
+          <span id="rel-status-label">Todos os status</span>
+          <svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#6b6864" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div id="rel-status-dropdown" style="display:none;position:absolute;z-index:100;top:100%;left:0;right:0;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);margin-top:4px;padding:8px;display:none;flex-direction:column;gap:4px">
+          <div id="rel-status-checks">
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background=''" onclick="atualizarLabelStatus()"><input type="checkbox" value="Recebida" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Recebida</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background=''" onclick="atualizarLabelStatus()"><input type="checkbox" value="Em contato" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Em contato</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background=''" onclick="atualizarLabelStatus()"><input type="checkbox" value="Qualificada" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Qualificada</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background=''" onclick="atualizarLabelStatus()"><input type="checkbox" value="Agendada" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Agendada</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background=''" onclick="atualizarLabelStatus()"><input type="checkbox" value="Em negociação" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Em negociação</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background=''" onclick="atualizarLabelStatus()"><input type="checkbox" value="Fechado" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Fechado</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background=''" onclick="atualizarLabelStatus()"><input type="checkbox" value="Futuro" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Futuro</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;border-radius:4px" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background=''" onclick="atualizarLabelStatus()"><input type="checkbox" value="Negado" style="accent-color:var(--gold2);width:14px;height:14px;cursor:pointer"> Negado</label>
+          </div>
+        </div>
       </div>
       <div>
         <label style="display:block;font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Parceiro</label>
@@ -1172,6 +1178,13 @@
         <label>Data do fechamento *</label>
         <input type="date" id="lead-data-fechamento">
       </div>
+      <div id="campo-reuniao" style="display:none">
+        <label>Data e hora da reunião</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <input type="date" id="lead-data-reuniao">
+          <input type="time" id="lead-hora-reuniao">
+        </div>
+      </div>
       <div id="campo-motivo-perda" style="display:none">
         <label>Motivo da perda *</label>
         <input type="text" id="lead-motivo" placeholder="Por que o negócio não foi fechado?">
@@ -1320,6 +1333,7 @@ function atualizarSubStatus() {
   subDiv.style.display = 'none';
   motivoDiv.style.display = 'none';
   dataFechDiv.style.display = 'none';
+  document.getElementById('campo-reuniao').style.display = 'none';
 
   if (status === 'Fechado') {
     subDiv.style.display = 'block';
@@ -1328,6 +1342,8 @@ function atualizarSubStatus() {
     subSel.innerHTML = '<option value="">Selecionar...</option>' + opts.map(o => `<option value="${o}">${o}</option>`).join('');
   } else if (status === 'Negado') {
     motivoDiv.style.display = 'block';
+  } else if (status === 'Agendada') {
+    document.getElementById('campo-reuniao').style.display = 'block';
   }
 }
 
@@ -1515,7 +1531,10 @@ function abrirNovaIndicacao() {
   document.getElementById('campo-substatus').style.display = 'none';
   document.getElementById('campo-motivo-perda').style.display = 'none';
   document.getElementById('campo-data-fechamento').style.display = 'none';
+  document.getElementById('campo-reuniao').style.display = 'none';
   document.getElementById('lead-data-fechamento').value = '';
+  document.getElementById('lead-data-reuniao').value = '';
+  document.getElementById('lead-hora-reuniao').value = '';
 
   const sel = document.getElementById('lead-parceiro');
   sel.innerHTML = '<option value="">Selecionar...</option>' + d.parceiros.map(p => {
@@ -1545,6 +1564,8 @@ function salvarIndicacao() {
   const status = editId ? document.getElementById('lead-status').value : 'Recebida';
   const substatus = document.getElementById('lead-substatus').value;
   const motivo = document.getElementById('lead-motivo').value.trim();
+  const dataReuniao = document.getElementById('lead-data-reuniao').value;
+  const horaReuniao = document.getElementById('lead-hora-reuniao').value;
   const dataFechamentoInput = document.getElementById('lead-data-fechamento').value;
   const dataFechamento = dataFechamentoInput ? new Date(dataFechamentoInput + 'T12:00:00').toISOString() : null;
 
@@ -1572,7 +1593,7 @@ function salvarIndicacao() {
       else if (['Recebida','Em contato'].includes(status)) resp = 'Alexsandra';
       // Só atualiza createdAt se o usuário alterou a data explicitamente
       const createdAtFinal = dataInput ? dataIso : lead.createdAt;
-      d.leads[idx] = { ...lead, nome, telefone: tel, parceiro, produto, valor, categoria, regime, operacao, perfil, entrada, obs, status, substatus, motivoPerda: motivo, dataFechamento: status === 'Fechado' ? (dataFechamento || lead.dataFechamento || agora) : lead.dataFechamento, responsavel: resp, createdAt: createdAtFinal };
+      d.leads[idx] = { ...lead, nome, telefone: tel, parceiro, produto, valor, categoria, regime, operacao, perfil, entrada, obs, status, substatus, motivoPerda: motivo, dataFechamento: status === 'Fechado' ? (dataFechamento || lead.dataFechamento || agora) : lead.dataFechamento, dataReuniao: status === 'Agendada' ? dataReuniao : lead.dataReuniao, horaReuniao: status === 'Agendada' ? horaReuniao : lead.horaReuniao, responsavel: resp, createdAt: createdAtFinal };
     }
   } else {
     d.leads.push({
@@ -1631,6 +1652,8 @@ function editarLead(id) {
   document.getElementById('campo-status').style.display = 'block';
   document.getElementById('lead-motivo').value = lead.motivoPerda || '';
   document.getElementById('lead-data-fechamento').value = lead.dataFechamento ? lead.dataFechamento.substring(0,10) : '';
+  document.getElementById('lead-data-reuniao').value = lead.dataReuniao || '';
+  document.getElementById('lead-hora-reuniao').value = lead.horaReuniao || '';
 
   const sel = document.getElementById('lead-parceiro');
   sel.innerHTML = '<option value="">Selecionar...</option>' + d.parceiros.map(p => {
@@ -1719,6 +1742,7 @@ function abrirDetalhe(id) {
       <div class="detail-row"><span class="detail-key">Entrada</span><span class="detail-value">${lead.entrada || '—'}</span></div>
       <div class="detail-row"><span class="detail-key">Data da indicação</span><span class="detail-value" style="display:flex;align-items:center;gap:8px">${formatDate(lead.createdAt)}<button onclick="editarData('${lead.id}')" style="background:none;border:none;color:var(--gold);font-size:12px;cursor:pointer;padding:0;font-family:'Inter',sans-serif">✏️ editar</button></span></div>
       ${lead.obs ? `<div class="detail-row"><span class="detail-key">Obs.</span><span class="detail-value" style="text-align:right;max-width:60%">${lead.obs}</span></div>` : ''}
+      ${lead.dataReuniao ? `<div class="detail-row"><span class="detail-key">Reunião</span><span class="detail-value" style="color:var(--green);font-weight:600">📅 ${new Date(lead.dataReuniao + 'T12:00:00').toLocaleDateString('pt-BR')}${lead.horaReuniao ? ' às ' + lead.horaReuniao : ''}</span></div>` : ''}
       ${lead.motivoPerda ? `<div class="detail-row"><span class="detail-key">Motivo perda</span><span class="detail-value">${lead.motivoPerda}</span></div>` : ''}
       ${lead.dataFechamento ? `<div class="detail-row"><span class="detail-key">Data fechamento</span><span class="detail-value">${new Date(lead.dataFechamento).toLocaleDateString('pt-BR')}</span></div>` : ''}
     </div>
@@ -1750,11 +1774,15 @@ function buildLeadCard(lead, d) {
   const master = parceiro && parceiro.master ? d.parceiros.find(p => p.id === parceiro.master) : null;
   const sc = STATUS_CLASS[lead.status] || 'recebida';
   const pc = PRODUTO_CLASS[lead.produto] || 'produto-indefinido';
+  const reuniaoInfo = lead.status === 'Agendada' && lead.dataReuniao
+    ? `<div style="font-size:11px;color:var(--green);font-weight:600;margin-top:4px">📅 ${new Date(lead.dataReuniao + 'T12:00:00').toLocaleDateString('pt-BR')}${lead.horaReuniao ? ' às ' + lead.horaReuniao : ''}</div>`
+    : '';
   return `<div class="lead-card" onclick="abrirDetalhe('${lead.id}')">
     <div class="lead-card-top">
       <div>
         <div class="lead-name">${lead.nome}</div>
         <div class="lead-meta"><a href="${waLink(lead.telefone)}" target="_blank" onclick="event.stopPropagation()" style="color:var(--green);text-decoration:none">${lead.telefone}</a>${lead.perfil ? ' · <strong>' + lead.perfil + '</strong>' : ''}</div>
+        ${reuniaoInfo}
       </div>
       <span class="badge badge-${sc}">${lead.status}</span>
     </div>
@@ -2275,6 +2303,32 @@ function leadNoPeriodo(lead, ini, fim) {
   return true;
 }
 
+function toggleStatusDropdown() {
+  const dd = document.getElementById('rel-status-dropdown');
+  dd.style.display = dd.style.display === 'none' || dd.style.display === '' ? 'flex' : 'none';
+  dd.style.flexDirection = 'column';
+}
+
+function atualizarLabelStatus() {
+  setTimeout(() => {
+    const checks = document.querySelectorAll('#rel-status-checks input[type=checkbox]:checked');
+    const selecionados = Array.from(checks).map(c => c.value);
+    const label = document.getElementById('rel-status-label');
+    if (selecionados.length === 0) label.textContent = 'Todos os status';
+    else if (selecionados.length === 1) label.textContent = selecionados[0];
+    else label.textContent = selecionados.length + ' status selecionados';
+  }, 10);
+}
+
+// Fechar dropdown ao clicar fora
+document.addEventListener('click', function(e) {
+  const btn = document.getElementById('rel-status-btn');
+  const dd = document.getElementById('rel-status-dropdown');
+  if (btn && dd && !btn.contains(e.target) && !dd.contains(e.target)) {
+    dd.style.display = 'none';
+  }
+});
+
 function renderRelatorio() {
   const d = getData();
   const el = document.getElementById('lista-relatorio');
@@ -2295,7 +2349,8 @@ function renderRelatorio() {
   let totalParceiros = 0;
 
   const relParceiroFiltro = document.getElementById('rel-parceiro')?.value || '';
-  const relStatusFiltro   = document.getElementById('rel-status')?.value || '';
+  const checks = document.querySelectorAll('#rel-status-checks input[type=checkbox]:checked');
+  const relStatusFiltro = Array.from(checks).map(c => c.value);
 
   d.parceiros.filter(p => p.tipo === 'master' || p.tipo === 'independente').forEach(master => {
     if (relParceiroFiltro && master.id !== relParceiroFiltro) return;
@@ -2303,7 +2358,7 @@ function renderRelatorio() {
     const leadsDoMaster = d.leads.filter(l =>
       (l.parceiro === master.id || vinculados.includes(l.parceiro)) &&
       leadNoPeriodo(l, ini, fim) &&
-      (!relStatusFiltro || l.status === relStatusFiltro)
+      (relStatusFiltro.length === 0 || relStatusFiltro.includes(l.status))
     );
     if (!leadsDoMaster.length) return;
     totalParceiros++;
