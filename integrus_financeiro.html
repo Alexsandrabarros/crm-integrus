@@ -1,0 +1,3077 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#0B1622">
+<title>Integrus — Financeiro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:    #0B1622;
+  --bg2:   #0F2035;
+  --bg3:   #162B45;
+  --bg4:   #1D3554;
+  --border:  rgba(201,168,76,0.12);
+  --border2: rgba(201,168,76,0.22);
+  --text:  #F7F5F0;
+  --text2: #C8CDD4;
+  --text3: #7A8A9A;
+  --gold:  #C9A84C;
+  --gold2: #E2C37A;
+  --gold-bg: rgba(201,168,76,0.1);
+  --teal:  #2dd4a0;
+  --teal-bg: rgba(45,212,160,0.1);
+  --purple: #9b8ef4;
+  --purple-bg: rgba(155,142,244,0.1);
+  --amber: #f59e47;
+  --amber-bg: rgba(245,158,71,0.1);
+  --blue:  #60a5fa;
+  --blue-bg: rgba(96,165,250,0.1);
+  --green: #4ade80;
+  --green-bg: rgba(74,222,128,0.1);
+  --red:   #f87171;
+  --red-bg: rgba(248,113,113,0.1);
+  --orange: #fb923c;
+  --orange-bg: rgba(251,146,60,0.1);
+  --gray-bg: rgba(255,255,255,0.04);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-xs: 6px;
+}
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; font-size:15px; line-height:1.5; min-height:100vh; overflow-x:hidden; }
+
+/* HEADER */
+.header { background:var(--bg2); border-bottom:1px solid var(--border); padding:16px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+.logo { font-family:'Cormorant Garamond',serif; font-size:20px; color:var(--gold2); letter-spacing:0.02em; }
+.logo span { color:var(--text2); font-size:13px; font-family:'Inter',sans-serif; font-weight:300; margin-left:8px; }
+.header-badge { background:var(--teal-bg); color:var(--teal); border:1px solid rgba(45,212,160,0.2); padding:4px 10px; border-radius:20px; font-size:11px; font-weight:600; letter-spacing:0.05em; }
+
+/* NAV */
+.nav { display:flex; gap:4px; background:var(--bg2); border-bottom:1px solid var(--border); padding:8px 16px; overflow-x:auto; scrollbar-width:none; }
+.nav::-webkit-scrollbar { display:none; }
+.nav-btn { background:none; border:none; color:var(--text3); font-family:'Inter',sans-serif; font-size:13px; font-weight:500; padding:8px 16px; border-radius:var(--radius-xs); cursor:pointer; white-space:nowrap; transition:all 0.2s; }
+.nav-btn:hover { background:var(--gray-bg); color:var(--text2); }
+.nav-btn.active { background:var(--gold-bg); color:var(--gold2); }
+
+/* VIEWS */
+.view { display:none; padding:20px; max-width:1200px; margin:0 auto; }
+.view.active { display:block; }
+
+/* SECTION TITLE */
+.section-title { font-family:'Inter',sans-serif; font-weight:700; font-size:20px; color:var(--text); margin-bottom:6px; }
+.section-sub { font-size:13px; font-family:'Inter',sans-serif; color:var(--text3); margin-bottom:20px; }
+
+/* CARDS GRID */
+.cards-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-bottom:24px; }
+.card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:18px 20px; }
+.card-label { font-size:11px; font-weight:600; color:var(--text3); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px; }
+.card-value { font-family:'Inter',sans-serif; font-size:26px; font-weight:700; color:var(--gold2); line-height:1.1; letter-spacing:-0.02em; }
+.card-value.green { color:var(--teal); }
+.card-value.red { color:var(--red); }
+.card-value.blue { color:var(--blue); }
+.card-value.purple { color:var(--purple); }
+.card-sub { font-size:12px; color:var(--text3); margin-top:4px; }
+
+/* TABLE */
+.table-wrap { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:24px; }
+.table-header { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid var(--border); }
+.table-title { font-size:14px; font-weight:600; color:var(--text); }
+table { width:100%; border-collapse:collapse; }
+th { font-size:10px; font-weight:600; color:var(--text3); text-transform:uppercase; letter-spacing:0.06em; padding:10px 16px; text-align:left; border-bottom:1px solid var(--border); }
+td { padding:12px 16px; font-size:13px; color:var(--text2); border-bottom:1px solid var(--border); }
+tr:last-child td { border-bottom:none; }
+tr:hover td { background:var(--gray-bg); }
+td.gold { color:var(--gold2); font-weight:600; }
+td.green { color:var(--teal); font-weight:600; }
+td.red { color:var(--red); }
+td.blue { color:var(--blue); }
+td.muted { color:var(--text3); }
+
+/* BADGES STATUS */
+.badge { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:600; white-space:nowrap; }
+.badge-ativo { background:var(--teal-bg); color:var(--teal); }
+.badge-inadimplente { background:var(--amber-bg); color:var(--amber); }
+.badge-cancelado { background:var(--red-bg); color:var(--red); }
+.badge-avencer { background:var(--purple-bg); color:var(--purple); }
+.badge-inativo { background:var(--gray-bg); color:var(--text3); }
+.badge-direto { background:var(--blue-bg); color:var(--blue); }
+.badge-indicacao { background:var(--purple-bg); color:var(--purple); }
+
+/* BUTTONS */
+.btn { display:inline-flex; align-items:center; gap:6px; padding:8px 16px; border-radius:var(--radius-xs); font-size:13px; font-weight:500; cursor:pointer; border:none; transition:all 0.2s; font-family:'Inter',sans-serif; }
+.btn-gold { background:var(--gold); color:#0B1622; }
+.btn-gold:hover { background:var(--gold2); }
+.btn-ghost { background:none; border:1px solid var(--border2); color:var(--text2); }
+.btn-ghost:hover { background:var(--gray-bg); }
+.btn-danger { background:var(--red-bg); color:var(--red); border:1px solid rgba(248,113,113,0.2); }
+.btn-danger:hover { background:rgba(248,113,113,0.2); }
+.btn-sm { padding:5px 10px; font-size:12px; }
+
+/* FILTERS BAR */
+.filters { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; align-items:center; }
+.filter-btn { background:var(--gray-bg); border:1px solid var(--border); color:var(--text3); font-size:12px; font-weight:500; padding:6px 12px; border-radius:20px; cursor:pointer; transition:all 0.2s; }
+.filter-btn:hover, .filter-btn.active { background:var(--gold-bg); color:var(--gold2); border-color:var(--border2); }
+.search-box { background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius-xs); padding:8px 12px; color:var(--text); font-size:13px; font-family:'Inter',sans-serif; outline:none; width:220px; }
+.search-box:focus { border-color:var(--border2); }
+.search-box::placeholder { color:var(--text3); }
+
+/* MODAL */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:200; align-items:center; justify-content:center; padding:20px; }
+.modal-overlay.open { display:flex; }
+.modal { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:28px; width:100%; max-width:560px; max-height:90vh; overflow-y:auto; }
+.modal-title { font-family:'Inter',sans-serif; font-size:18px; font-weight:700; color:var(--gold2); margin-bottom:20px; }
+.modal-footer { display:flex; gap:8px; justify-content:flex-end; margin-top:24px; border-top:1px solid var(--border); padding-top:16px; }
+
+/* FORM */
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+.form-row.single { grid-template-columns:1fr; }
+.form-row.triple { grid-template-columns:1fr 1fr 1fr; }
+.form-group { display:flex; flex-direction:column; gap:4px; }
+label { font-size:11px; font-weight:600; color:var(--text3); text-transform:uppercase; letter-spacing:0.05em; }
+input, select, textarea { background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius-xs); padding:10px 12px; color:var(--text); font-size:13px; font-family:'Inter',sans-serif; outline:none; transition:border 0.2s; }
+input:focus, select:focus, textarea:focus { border-color:var(--border2); }
+select option { background:var(--bg3); }
+textarea { resize:vertical; min-height:72px; }
+input::placeholder, textarea::placeholder { color:var(--text3); }
+
+/* DIVIDER */
+.divider { height:1px; background:var(--border); margin:20px 0; }
+
+/* MONTH SELECTOR */
+.mes-selector { display:flex; align-items:center; gap:8px; margin-bottom:20px; }
+.mes-selector select { width:auto; }
+.mes-label { font-size:13px; color:var(--text3); }
+
+/* DETAIL ROW */
+.detail-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border); }
+.detail-row:last-child { border-bottom:none; }
+.detail-key { font-size:12px; color:var(--text3); }
+.detail-val { font-size:13px; color:var(--text2); font-weight:500; }
+.detail-val.gold { color:var(--gold2); }
+.detail-val.green { color:var(--teal); }
+.detail-val.red { color:var(--red); }
+
+/* PARCELAS TIMELINE */
+.parcelas-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin:16px 0; }
+.parcela-item { background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px; text-align:center; }
+.parcela-num { font-size:10px; color:var(--text3); font-weight:600; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px; }
+.parcela-data { font-size:11px; color:var(--gold2); margin-bottom:4px; }
+.parcela-val { font-size:14px; font-weight:700; color:var(--teal); }
+.parcela-val.zero { color:var(--text3); }
+.parcela-item.past { opacity:0.5; }
+.parcela-item.hoje { border-color:var(--gold); }
+
+/* TOAST */
+#toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--bg4); border:1px solid var(--border2); color:var(--text); padding:10px 20px; border-radius:var(--radius); font-size:13px; z-index:999; transition:transform 0.3s; pointer-events:none; }
+#toast.show { transform:translateX(-50%) translateY(0); }
+
+/* EMPTY STATE */
+.empty { text-align:center; padding:48px 20px; color:var(--text3); }
+.empty-icon { font-size:40px; margin-bottom:12px; }
+.empty-msg { font-size:14px; }
+
+/* COMISSAO BADGE */
+.com-badge { display:inline-block; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; }
+.com-recebida { background:var(--teal-bg); color:var(--teal); }
+.com-pendente { background:var(--amber-bg); color:var(--amber); }
+.com-cancelada { background:var(--red-bg); color:var(--red); }
+
+/* ACTIONS */
+.row-actions { display:flex; gap:6px; }
+
+/* RELATORIO */
+.rel-empresa-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); margin-bottom:16px; overflow:hidden; }
+.rel-empresa-header { padding:16px 20px; background:var(--bg3); border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+.rel-empresa-nome { font-family:'Inter',sans-serif; font-size:16px; font-weight:700; color:var(--gold2); }
+.rel-totais { display:flex; gap:20px; }
+.rel-total-item { text-align:right; }
+.rel-total-label { font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:0.05em; }
+.rel-total-val { font-size:16px; font-weight:700; color:var(--teal); }
+.rel-total-val.emp { color:var(--blue); }
+.rel-total-val.cons { color:var(--purple); }
+.rel-total-val.liq { color:var(--gold2); }
+
+
+
+/* MÓDULO SELECTOR */
+.modulo-trigger {
+  display:flex; align-items:center; gap:10px;
+  background:var(--bg3); border:1px solid var(--border2);
+  padding:8px 14px; border-radius:var(--radius-sm);
+  cursor:pointer; transition:all 0.2s; min-width:200px;
+}
+.modulo-trigger:hover { border-color:var(--gold); background:var(--bg4); }
+.modulo-trigger-icon { font-size:18px; }
+.modulo-trigger-info { flex:1; }
+.modulo-trigger-label { font-size:10px; color:var(--text3); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; line-height:1; margin-bottom:2px; }
+.modulo-trigger-name { font-size:13px; color:var(--gold2); font-weight:600; line-height:1; }
+.modulo-trigger-arrow { color:var(--text3); font-size:10px; transition:transform 0.2s; }
+.modulo-trigger.open .modulo-trigger-arrow { transform:rotate(180deg); }
+
+.modulo-dropdown {
+  display:none; position:absolute; right:0; top:calc(100% + 8px);
+  background:var(--bg2); border:1px solid var(--border2);
+  border-radius:var(--radius); width:280px; z-index:300;
+  overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.5);
+}
+.modulo-dropdown-header {
+  padding:12px 16px; border-bottom:1px solid var(--border);
+  font-size:10px; color:var(--text3); font-weight:600;
+  text-transform:uppercase; letter-spacing:0.08em;
+}
+.modulo-item {
+  display:flex; align-items:center; gap:12px;
+  padding:14px 16px; cursor:pointer; transition:all 0.15s;
+  border-bottom:1px solid var(--border);
+}
+.modulo-item:last-child { border-bottom:none; }
+.modulo-item:hover:not(.em-breve) { background:var(--gold-bg); }
+.modulo-item.active { background:var(--gold-bg); }
+.modulo-item-icon {
+  width:36px; height:36px; border-radius:var(--radius-xs);
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; flex-shrink:0;
+}
+.modulo-item-icon.hs { background:rgba(45,212,160,0.15); }
+.modulo-item-icon.contas { background:rgba(248,113,113,0.15); }
+.modulo-item-icon.bb { background:rgba(96,165,250,0.15); }
+.modulo-item-icon.credito { background:rgba(155,142,244,0.15); }
+.modulo-item-text { flex:1; }
+.modulo-item-name { font-size:13px; font-weight:600; color:var(--text); line-height:1.2; }
+.modulo-item.active .modulo-item-name { color:var(--gold2); }
+.modulo-item-desc { font-size:11px; color:var(--text3); margin-top:2px; }
+.modulo-item.em-breve { opacity:0.45; cursor:default; }
+.badge-breve { background:var(--bg4); color:var(--text3); font-size:10px; padding:2px 7px; border-radius:10px; font-weight:500; border:1px solid var(--border); }
+
+/* MÓDULO VIEWS */
+.modulo-view { display:none; }
+.modulo-view.active { display:block; }
+/* STATUS INLINE */
+.status-select { background:none; border:none; cursor:pointer; font-size:11px; font-weight:600; padding:3px 8px; border-radius:20px; font-family:'Inter',sans-serif; outline:none; }
+.status-select.ativo { background:var(--teal-bg); color:var(--teal); }
+.status-select.inadimplente { background:var(--amber-bg); color:var(--amber); }
+.status-select.cancelado { background:var(--red-bg); color:var(--red); }
+.status-select.inativo { background:var(--gray-bg); color:var(--text3); }
+.status-select.a-vencer { background:var(--purple-bg); color:var(--purple); }
+/* RESPONSIVE */
+@media(max-width:768px) {
+  .form-row { grid-template-columns:1fr; }
+  .form-row.triple { grid-template-columns:1fr 1fr; }
+  .cards-grid { grid-template-columns:1fr 1fr; }
+  .parcelas-grid { grid-template-columns:repeat(3,1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo" style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;letter-spacing:0.08em;color:var(--gold2)">INTEGRUS <span style="font-family:'Inter',sans-serif;font-size:11px;font-weight:400;letter-spacing:0.15em;color:var(--text3);margin-left:6px;text-transform:uppercase">— Financeiro</span></div>
+  <div style="position:relative;">
+  <div class="modulo-trigger" onclick="toggleModuloMenu()" id="modulo-btn">
+    <div class="modulo-trigger-icon" id="modulo-icon">📊</div>
+    <div class="modulo-trigger-info">
+      <div class="modulo-trigger-label">Módulo</div>
+      <div class="modulo-trigger-name" id="modulo-nome">HS Consórcio</div>
+    </div>
+    <div class="modulo-trigger-arrow">▼</div>
+  </div>
+  <div class="modulo-dropdown" id="modulo-menu">
+    <div class="modulo-dropdown-header">Selecionar módulo</div>
+    <div class="modulo-item active" onclick="selecionarModulo('hs')">
+      <div class="modulo-item-icon hs">📊</div>
+      <div class="modulo-item-text">
+        <div class="modulo-item-name">HS Consórcio</div>
+        <div class="modulo-item-desc">Vendas, comissões e parceiros</div>
+      </div>
+    </div>
+    <div class="modulo-item" onclick="selecionarModulo('contas')">
+      <div class="modulo-item-icon contas">💸</div>
+      <div class="modulo-item-text">
+        <div class="modulo-item-name">Contas a Pagar</div>
+        <div class="modulo-item-desc">Despesas e recorrentes</div>
+      </div>
+    </div>
+    <div class="modulo-item" onclick="selecionarModulo('pessoal')">
+      <div class="modulo-item-icon" style="background:rgba(245,158,71,0.15);">👤</div>
+      <div class="modulo-item-text">
+        <div class="modulo-item-name">Pessoal</div>
+        <div class="modulo-item-desc">Controle financeiro pessoal</div>
+      </div>
+    </div>
+    <div class="modulo-item em-breve">
+      <div class="modulo-item-icon bb">🏦</div>
+      <div class="modulo-item-text">
+        <div class="modulo-item-name">BB Consórcio <span class="badge-breve">Em breve</span></div>
+        <div class="modulo-item-desc">Comissões Banco do Brasil</div>
+      </div>
+    </div>
+    <div class="modulo-item em-breve">
+      <div class="modulo-item-icon credito">💳</div>
+      <div class="modulo-item-text">
+        <div class="modulo-item-name">Crédito <span class="badge-breve">Em breve</span></div>
+        <div class="modulo-item-desc">Home Equity e Crédito PJ</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- NAV -->
+<div id="modulo-hs" class="modulo-view active">
+<div class="nav">
+  <button class="nav-btn active" onclick="showView('dashboard',this)">Dashboard</button>
+  <button class="nav-btn" onclick="showView('clientes',this)">Vendas</button>
+  <button class="nav-btn" onclick="showView('comissoes',this)">Comissões</button>
+  <button class="nav-btn" onclick="showView('parceiros',this)">Parceiros</button>
+  <button class="nav-btn" onclick="showView('relatorio',this)">Relatório</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════ DASHBOARD ═══ -->
+<div class="view active" id="view-dashboard">
+  <div class="section-title">Dashboard</div>
+  <div class="section-sub" id="dash-periodo">Carregando...</div>
+
+  <!-- Seletor mês -->
+  <div class="mes-selector">
+    <span class="mes-label">Mês:</span>
+    <select id="dash-mes" onchange="renderDashboard()">
+      <option value="1">Jan/2026</option><option value="2">Fev/2026</option>
+      <option value="3">Mar/2026</option><option value="4" selected>Abr/2026</option>
+      <option value="5">Mai/2026</option><option value="6">Jun/2026</option>
+      <option value="7">Jul/2026</option><option value="8">Ago/2026</option>
+      <option value="9">Set/2026</option><option value="10">Out/2026</option>
+      <option value="11">Nov/2026</option><option value="12">Dez/2026</option>
+    </select>
+  </div>
+
+  <!-- KPIs -->
+  <div class="cards-grid" id="dash-cards"></div>
+
+  <!-- Tabela clientes do mês -->
+  <div class="table-wrap">
+    <div class="table-header">
+      <div class="table-title">Comissões por Cliente</div>
+    </div>
+    <table>
+      <thead><tr>
+        <th>Cliente</th>
+        <th>Adiant. Dia 20 (mês ant.)</th>
+        <th>Receb. Dia 05 (mês atual)</th>
+        <th>Total NF</th>
+        <th>Adiant. Dia 20 (mês atual)</th>
+      </tr></thead>
+      <tbody id="dash-clientes"></tbody>
+    </table>
+  </div>
+
+  <!-- Total vendas -->
+  <div class="table-wrap">
+    <div class="table-header"><div class="table-title">💼 Total em Vendas (Crédito)</div></div>
+    <div style="padding:20px;">
+      <div style="font-family:'Inter',sans-serif;font-size:32px;font-weight:700;color:var(--gold2);letter-spacing:-0.02em;" id="dash-total-vendas">R$ 0,00</div>
+      <div style="font-size:12px;color:var(--text3);margin-top:4px;" id="dash-total-contratos">0 contratos ativos</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ CLIENTES ═══ -->
+<div class="view" id="view-clientes">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">
+    <div class="section-title">Vendas</div>
+    <button class="btn btn-gold" onclick="abrirNovoCliente()">+ Nova Venda</button>
+  </div>
+  <div class="section-sub">Controle de contratos HS Consórcio</div>
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="filtrarClientes('todos',this)">Todos</button>
+    <button class="filter-btn" onclick="filtrarClientes('ATIVO',this)">Ativos</button>
+    <button class="filter-btn" onclick="filtrarClientes('INADIMPLENTE',this)">Inadimplentes</button>
+    <button class="filter-btn" onclick="filtrarClientes('CANCELADO',this)">Cancelados</button>
+    <input class="search-box" id="search-clientes" placeholder="Buscar cliente..." oninput="renderClientes()">
+  </div>
+
+  <div id="lista-clientes"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ COMISSÕES ═══ -->
+<div class="view" id="view-comissoes">
+  <div class="section-title">Comissões</div>
+  <div class="section-sub">Calendário de recebimentos</div>
+
+  <div class="mes-selector">
+    <span class="mes-label">Mês:</span>
+    <select id="com-mes" onchange="renderComissoes()">
+      <option value="1">Jan/2026</option><option value="2">Fev/2026</option>
+      <option value="3">Mar/2026</option><option value="4" selected>Abr/2026</option>
+      <option value="5">Mai/2026</option><option value="6">Jun/2026</option>
+      <option value="7">Jul/2026</option><option value="8">Ago/2026</option>
+      <option value="9">Set/2026</option><option value="10">Out/2026</option>
+      <option value="11">Nov/2026</option><option value="12">Dez/2026</option>
+    </select>
+  </div>
+
+  <!-- KPIs comissões -->
+  <div class="cards-grid" id="com-cards"></div>
+
+  <!-- Tabela comissões -->
+  <div class="table-wrap">
+    <div class="table-header"><div class="table-title">Parcelas do Mês</div></div>
+    <table>
+      <thead><tr>
+        <th>Cliente</th><th>Parcela</th><th>Data</th><th>Tipo</th><th>Valor</th><th>Status</th>
+      </tr></thead>
+      <tbody id="com-lista"></tbody>
+    </table>
+  </div>
+
+  <!-- Estornos -->
+  <div class="table-wrap" id="estornos-wrap" style="display:none;">
+    <div class="table-header"><div class="table-title" style="color:var(--red);">⚠ Estornos — Contratos Cancelados</div></div>
+    <table>
+      <thead><tr>
+        <th>Cliente</th><th>Data Alocação</th><th>Limite 8 meses</th><th>Estorno</th>
+      </tr></thead>
+      <tbody id="estornos-lista"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ PARCEIROS ═══ -->
+<div class="view" id="view-parceiros">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">
+    <div class="section-title">Parceiros</div>
+    <button class="btn btn-gold" onclick="abrirNovoParceiro()">+ Novo Parceiro</button>
+  </div>
+  <div class="section-sub">Empresas e consultores parceiros</div>
+  <div id="lista-parceiros"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ RELATÓRIO ═══ -->
+<div class="view" id="view-relatorio">
+  <div class="section-title">Relatório de Comissionamento</div>
+  <div class="section-sub">Demonstrativo mensal por empresa parceira</div>
+
+  <div class="filters" style="margin-bottom:20px;">
+    <div class="form-group">
+      <label>Mês</label>
+      <select id="rel-mes">
+        <option value="1">Jan/2026</option><option value="2">Fev/2026</option>
+        <option value="3">Mar/2026</option><option value="4" selected>Abr/2026</option>
+        <option value="5">Mai/2026</option><option value="6">Jun/2026</option>
+        <option value="7">Jul/2026</option><option value="8">Ago/2026</option>
+        <option value="9">Set/2026</option><option value="10">Out/2026</option>
+        <option value="11">Nov/2026</option><option value="12">Dez/2026</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Empresa</label>
+      <select id="rel-empresa"><option value="">Selecionar...</option></select>
+    </div>
+    <div style="align-self:flex-end;">
+      <button class="btn btn-gold" onclick="gerarRelatorio()">Gerar Relatório</button>
+    </div>
+  </div>
+
+  <div id="rel-resultado"></div>
+</div>
+
+</div><!-- fim modulo-hs -->
+
+<!-- ═══════════════════════════════════════ CONTAS A PAGAR ═══ -->
+<div id="modulo-contas" class="modulo-view">
+<div class="nav">
+  <button class="nav-btn active" onclick="showContasView('contas-dashboard',this)">Dashboard</button>
+  <button class="nav-btn" onclick="showContasView('contas-lista',this)">Contas</button>
+</div>
+
+<!-- DASHBOARD CONTAS -->
+<div class="view active" id="view-contas-dashboard">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">
+    <div class="section-title">Contas a Pagar</div>
+    <button class="btn btn-ghost btn-sm" onclick="resetarContas()" style="color:var(--text3);font-size:11px;">⚙ Limpar dados</button>
+  </div>
+  <div class="section-sub" id="contas-dash-periodo">Carregando...</div>
+
+  <div class="mes-selector">
+    <span class="mes-label">Mês:</span>
+    <select id="contas-mes" onchange="renderContasDashboard()">
+      <option value="1">Jan/2026</option><option value="2">Fev/2026</option>
+      <option value="3">Mar/2026</option><option value="4">Abr/2026</option>
+      <option value="5" selected>Mai/2026</option><option value="6">Jun/2026</option>
+      <option value="7">Jul/2026</option><option value="8">Ago/2026</option>
+      <option value="9">Set/2026</option><option value="10">Out/2026</option>
+      <option value="11">Nov/2026</option><option value="12">Dez/2026</option>
+    </select>
+  </div>
+
+  <div id="contas-dash-cards"></div>
+  <div id="contas-dash-lista-wrap"></div>
+</div>
+
+<!-- LISTA CONTAS -->
+<div class="view" id="view-contas-lista">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">
+    <div class="section-title">Contas</div>
+    <button class="btn btn-gold" onclick="abrirNovaConta()">+ Nova Conta</button>
+  </div>
+  <div class="section-sub">Gerencie suas contas fixas e avulsas</div>
+  <div id="contas-lista-wrap"></div>
+</div>
+
+
+
+</div><!-- fim modulo-contas -->
+
+
+<!-- ═══════════════════════════════════════ PESSOAL ═══ -->
+<div id="modulo-pessoal" class="modulo-view">
+<div class="nav">
+  <button class="nav-btn active" onclick="showPessoalView('pessoal-dashboard',this)">Dashboard</button>
+  <button class="nav-btn" onclick="showPessoalView('pessoal-lista',this)">Contas</button>
+</div>
+
+<!-- DASHBOARD PESSOAL -->
+<div class="view active" id="view-pessoal-dashboard">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">
+    <div class="section-title">Pessoal</div>
+    <button class="btn btn-ghost btn-sm" onclick="resetarPessoal()" style="color:var(--text3);font-size:11px;">⚙ Limpar dados</button>
+  </div>
+  <div class="section-sub" id="pessoal-dash-periodo">Carregando...</div>
+
+  <div class="mes-selector">
+    <span class="mes-label">Mês:</span>
+    <select id="pessoal-mes" onchange="renderPessoalDashboard()">
+      <option value="1">Jan/2026</option><option value="2">Fev/2026</option>
+      <option value="3">Mar/2026</option><option value="4">Abr/2026</option>
+      <option value="5" selected>Mai/2026</option><option value="6">Jun/2026</option>
+      <option value="7">Jul/2026</option><option value="8">Ago/2026</option>
+      <option value="9">Set/2026</option><option value="10">Out/2026</option>
+      <option value="11">Nov/2026</option><option value="12">Dez/2026</option>
+    </select>
+  </div>
+
+  <div id="pessoal-dash-cards"></div>
+  <div id="pessoal-dash-lista-wrap"></div>
+</div>
+
+<!-- LISTA PESSOAL -->
+<div class="view" id="view-pessoal-lista">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">
+    <div class="section-title">Contas Pessoais</div>
+    <button class="btn btn-gold" onclick="abrirNovaPessoal()">+ Nova Conta</button>
+  </div>
+  <div class="section-sub">Gerencie suas contas pessoais</div>
+  <div id="pessoal-lista-wrap"></div>
+</div>
+</div><!-- fim modulo-pessoal -->
+
+<!-- MODAL CONTA PESSOAL -->
+<div class="modal-overlay" id="modal-pessoal">
+  <div class="modal">
+    <div class="modal-title" id="modal-pessoal-title">Nova Conta Pessoal</div>
+    <input type="hidden" id="pessoal-id-edit">
+
+    <div class="form-row single">
+      <div class="form-group">
+        <label>Descrição *</label>
+        <input id="pessoal-desc" placeholder="Ex: Aluguel, Mercado...">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Categoria</label>
+        <select id="pessoal-cat">
+          <option value="Moradia">Moradia</option>
+          <option value="Alimentação">Alimentação</option>
+          <option value="Transporte">Transporte</option>
+          <option value="Saúde">Saúde</option>
+          <option value="Educação">Educação</option>
+          <option value="Lazer">Lazer</option>
+          <option value="Vestuário">Vestuário</option>
+          <option value="Impostos">Impostos</option>
+          <option value="Assinaturas">Assinaturas</option>
+          <option value="Outros">Outros</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Valor *</label>
+        <input id="pessoal-valor" type="number" step="0.01" placeholder="0,00">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Status</label>
+        <select id="pessoal-status">
+          <option value="A VENCER">A Vencer</option>
+          <option value="PAGO">Pago</option>
+          <option value="VENCIDO">Vencido</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Forma de Pagamento</label>
+        <select id="pessoal-forma">
+          <option value="Pix">Pix</option>
+          <option value="Boleto">Boleto</option>
+          <option value="Débito Automático">Débito Automático</option>
+          <option value="Cartão">Cartão</option>
+          <option value="Transferência">Transferência</option>
+          <option value="Dinheiro">Dinheiro</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Recorrente (todo mês)?</label>
+        <select id="pessoal-recorrente" onchange="togglePessoalRecorrente()">
+          <option value="nao">Não — conta avulsa</option>
+          <option value="sim">Sim — repete todo mês</option>
+          <option value="parcelado">Parcelado — número de parcelas fixo</option>
+        </select>
+      </div>
+      <div class="form-group" id="pessoal-campo-dia">
+        <label>Dia de Vencimento</label>
+        <input id="pessoal-dia-venc" type="number" min="1" max="31" placeholder="Ex: 10">
+      </div>
+    </div>
+    <div class="form-row" id="pessoal-campo-mes-inicio" style="display:none;">
+      <div class="form-group">
+        <label>A partir de qual mês?</label>
+        <select id="pessoal-mes-inicio" onchange="atualizarTerminoPessoal()">
+          <option value="1">Jan/2026</option><option value="2">Fev/2026</option>
+          <option value="3">Mar/2026</option><option value="4">Abr/2026</option>
+          <option value="5" selected>Mai/2026</option><option value="6">Jun/2026</option>
+          <option value="7">Jul/2026</option><option value="8">Ago/2026</option>
+          <option value="9">Set/2026</option><option value="10">Out/2026</option>
+          <option value="11">Nov/2026</option><option value="12">Dez/2026</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Ano</label>
+        <select id="pessoal-ano-inicio" onchange="atualizarTerminoPessoal()">
+          <option value="2026" selected>2026</option>
+          <option value="2027">2027</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row" id="pessoal-campo-parcelas" style="display:none;">
+      <div class="form-group">
+        <label>Número de Parcelas *</label>
+        <input id="pessoal-num-parcelas" type="number" min="1" max="120" placeholder="Ex: 3" oninput="atualizarTerminoPessoal()">
+      </div>
+      <div class="form-group">
+        <label>Término previsto</label>
+        <div id="pessoal-termino-preview" style="padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-xs);font-size:12px;color:var(--gold2);">
+          Preencha os campos acima
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Vencimento</label>
+        <input id="pessoal-venc" type="date">
+      </div>
+      <div class="form-group">
+        <label>Data Pagamento</label>
+        <input id="pessoal-data-pag" type="date">
+      </div>
+    </div>
+    <div class="form-row single">
+      <div class="form-group">
+        <label>Observações</label>
+        <textarea id="pessoal-obs" placeholder="Detalhes..."></textarea>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="fecharModal('modal-pessoal')">Cancelar</button>
+      <button class="btn btn-gold" onclick="salvarPessoal()">Salvar</button>
+    </div>
+  </div>
+</div>
+<!-- ═══════════════════════════════ MODAL CONTA ═══ -->
+<div class="modal-overlay" id="modal-conta">
+  <div class="modal">
+    <div class="modal-title" id="modal-conta-title">Nova Conta</div>
+    <input type="hidden" id="conta-id-edit">
+
+    <div class="form-row single">
+      <div class="form-group">
+        <label>Descrição *</label>
+        <input id="conta-desc" placeholder="Ex: Mensalidade Contador">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Categoria</label>
+        <select id="conta-cat">
+          <option value="Contabilidade">Contabilidade</option>
+          <option value="Impostos">Impostos</option>
+          <option value="Veículo">Veículo</option>
+          <option value="Parcelamento">Parcelamento</option>
+          <option value="Marketing">Marketing</option>
+          <option value="Tecnologia">Tecnologia</option>
+          <option value="Escritório">Escritório</option>
+          <option value="Pessoal">Pessoal</option>
+          <option value="Outros">Outros</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Valor *</label>
+        <input id="conta-valor" type="number" step="0.01" placeholder="0,00">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Vencimento *</label>
+        <input id="conta-venc" type="date">
+      </div>
+      <div class="form-group">
+        <label>Forma de Pagamento</label>
+        <select id="conta-forma">
+          <option value="Pix">Pix</option>
+          <option value="Boleto">Boleto</option>
+          <option value="Débito Automático">Débito Automático</option>
+          <option value="Transferência">Transferência</option>
+          <option value="Cartão">Cartão</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Status</label>
+        <select id="conta-status">
+          <option value="A VENCER">A Vencer</option>
+          <option value="PAGO">Pago</option>
+          <option value="VENCIDO">Vencido</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Data Pagamento</label>
+        <input id="conta-data-pag" type="date">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Recorrente (todo mês)?</label>
+        <select id="conta-recorrente" onchange="toggleRecorrente()">
+          <option value="nao">Não — conta avulsa</option>
+          <option value="sim">Sim — repete todo mês</option>
+          <option value="parcelado">Parcelado — número de parcelas fixo</option>
+        </select>
+      </div>
+      <div class="form-group" id="campo-dia-venc">
+        <label>Dia de Vencimento</label>
+        <input id="conta-dia-venc" type="number" min="1" max="31" placeholder="Ex: 10">
+      </div>
+    </div>
+    <div class="form-row" id="campo-mes-inicio" style="display:none;">
+      <div class="form-group">
+        <label>A partir de qual mês?</label>
+        <select id="conta-mes-inicio" onchange="atualizarTerminoParcela()">
+          <option value="1">Jan/2026</option><option value="2">Fev/2026</option>
+          <option value="3">Mar/2026</option><option value="4">Abr/2026</option>
+          <option value="5" selected>Mai/2026</option><option value="6">Jun/2026</option>
+          <option value="7">Jul/2026</option><option value="8">Ago/2026</option>
+          <option value="9">Set/2026</option><option value="10">Out/2026</option>
+          <option value="11">Nov/2026</option><option value="12">Dez/2026</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Ano</label>
+        <select id="conta-ano-inicio" onchange="atualizarTerminoParcela()">
+          <option value="2026" selected>2026</option>
+          <option value="2027">2027</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row" id="campo-parcelas" style="display:none;">
+      <div class="form-group">
+        <label>Número de Parcelas *</label>
+        <input id="conta-num-parcelas" oninput="atualizarTerminoParcela()" type="number" min="1" max="120" placeholder="Ex: 3">
+      </div>
+      <div class="form-group">
+        <label>Término previsto</label>
+        <div id="conta-termino-preview" style="padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-xs);font-size:12px;color:var(--gold2);">
+          Preencha os campos acima
+        </div>
+      </div>
+    </div>
+    <div class="form-row single">
+      <div class="form-group">
+        <label>Observações</label>
+        <textarea id="conta-obs" placeholder="Ex: Parcelamento 3/12, referente a..."></textarea>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="fecharModal('modal-conta')">Cancelar</button>
+      <button class="btn btn-gold" onclick="salvarConta()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ═══════════════════════════════ MODAL CLIENTE ═══ -->══ -->
+<div class="modal-overlay" id="modal-cliente">
+  <div class="modal">
+    <div class="modal-title" id="modal-cliente-title">Nova Venda</div>
+    <input type="hidden" id="cliente-id-edit">
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Status *</label>
+        <select id="cli-status">
+          <option value="ATIVO">Ativo</option>
+          <option value="INADIMPLENTE">Inadimplente</option>
+          <option value="CANCELADO">Cancelado</option>
+          <option value="INATIVO">Inativo</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tipo de Cliente *</label>
+        <select id="cli-tipo" onchange="toggleParceiro()">
+          <option value="Direto">Direto</option>
+          <option value="Indicação">Indicação</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row single">
+      <div class="form-group">
+        <label>Nome Completo / Razão Social *</label>
+        <input id="cli-nome" placeholder="Nome do cliente ou empresa">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>CPF / CNPJ</label>
+        <input id="cli-cpf" placeholder="000.000.000-00">
+      </div>
+      <div class="form-group">
+        <label>Telefone</label>
+        <input id="cli-tel" placeholder="(83) 99999-9999">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>UF</label>
+        <select id="cli-uf">
+          <option value="PB">PB</option><option value="PE">PE</option>
+          <option value="CE">CE</option><option value="RN">RN</option>
+          <option value="BA">BA</option><option value="SP">SP</option>
+          <option value="RJ">RJ</option><option value="MG">MG</option>
+          <option value="Outro">Outro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Cidade</label>
+        <input id="cli-cidade" placeholder="Campina Grande">
+      </div>
+    </div>
+
+    <!-- Parceiro (aparece só se Indicação) -->
+    <div id="campo-parceiro" style="display:none;">
+      <div class="divider"></div>
+      <div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;margin-bottom:12px;">Parceiro</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Empresa Parceira</label>
+          <select id="cli-empresa-parceiro"><option value="">Selecionar...</option></select>
+        </div>
+        <div class="form-group">
+          <label>Consultor</label>
+          <select id="cli-consultor"><option value="">Selecionar...</option></select>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;margin-bottom:12px;">Produto</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Produto</label>
+        <select id="cli-produto">
+          <option value="HS Consórcio">HS Consórcio</option>
+          <option value="BB Consórcio">BB Consórcio</option>
+          <option value="Carta Contemplada">Carta Contemplada</option>
+          <option value="Home Equity">Home Equity</option>
+          <option value="Crédito PJ">Crédito PJ</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Valor do Crédito *</label>
+        <input id="cli-credito" type="number" placeholder="500000">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Meia Parcela?</label>
+        <select id="cli-meia">
+          <option value="Sim">Sim</option>
+          <option value="Não">Não</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Pós Assembleia?</label>
+        <select id="cli-pos">
+          <option value="Sim">Sim</option>
+          <option value="Não">Não</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Data da Venda *</label>
+        <input id="cli-data-venda" type="date">
+      </div>
+      <div class="form-group">
+        <label>Data de Alocação *</label>
+        <input id="cli-data-alocacao" type="date">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Status HS</label>
+        <select id="cli-status-hs">
+          <option value="Alocado">Alocado</option>
+          <option value="Pendente">Pendente</option>
+          <option value="Cancelado">Cancelado</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Contrato Alocado?</label>
+        <select id="cli-contrato">
+          <option value="Sim">Sim</option>
+          <option value="Não">Não</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row single">
+      <div class="form-group">
+        <label>Campanha / Desconto de Ativação</label>
+        <input id="cli-campanha" placeholder="Ex: Desconto 40% na 1ª parcela — R$ 307,50">
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="fecharModal('modal-cliente')">Cancelar</button>
+      <button class="btn btn-gold" onclick="salvarCliente()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ MODAL PARCEIRO ═══ -->
+<div class="modal-overlay" id="modal-parceiro">
+  <div class="modal">
+    <div class="modal-title" id="modal-parceiro-title">Novo Parceiro</div>
+    <input type="hidden" id="parceiro-id-edit">
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Empresa Parceira *</label>
+        <input id="par-empresa" placeholder="Shalom Imóveis">
+      </div>
+      <div class="form-group">
+        <label>CNPJ</label>
+        <input id="par-cnpj" placeholder="00.000.000/0001-00">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nome do Consultor *</label>
+        <input id="par-consultor" placeholder="Afonso Oliveira">
+      </div>
+      <div class="form-group">
+        <label>Cargo</label>
+        <select id="par-cargo">
+          <option value="Proprietário">Proprietário</option>
+          <option value="Consultor">Consultor</option>
+          <option value="Corretor">Corretor</option>
+          <option value="Parceiro Indicador">Parceiro Indicador</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>% Comissão *</label>
+        <input id="par-pct" type="number" step="0.1" placeholder="1.4">
+      </div>
+      <div class="form-group">
+        <label>Telefone</label>
+        <input id="par-tel" placeholder="(83) 99999-9999">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>UF</label>
+        <select id="par-uf">
+          <option value="PB">PB</option><option value="PE">PE</option>
+          <option value="CE">CE</option><option value="RN">RN</option>
+          <option value="BA">BA</option><option value="SP">SP</option>
+          <option value="Outro">Outro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Cidade</label>
+        <input id="par-cidade" placeholder="Campina Grande">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Status</label>
+        <select id="par-status">
+          <option value="ATIVO">Ativo</option>
+          <option value="INATIVO">Inativo</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>CPF Consultor</label>
+        <input id="par-cpf" placeholder="000.000.000-00">
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="fecharModal('modal-parceiro')">Cancelar</button>
+      <button class="btn btn-gold" onclick="salvarParceiro()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ MODAL DETALHE CLIENTE ═══ -->
+<div class="modal-overlay" id="modal-detalhe">
+  <div class="modal" style="max-width:700px;">
+    <div class="modal-title" id="detalhe-nome"></div>
+    <div id="detalhe-content"></div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" id="detalhe-excluir">Excluir</button>
+      <button class="btn btn-ghost" onclick="fecharModal('modal-detalhe')">Fechar</button>
+      <button class="btn btn-gold" id="detalhe-editar">Editar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'integrus_financeiro_v1';
+const MESES = ['','Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+
+// ── DATA ─────────────────────────────────────────────────────────────────────
+function getData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return { clientes: [], parceiros: [] };
+}
+function saveData(d) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); } catch(e) {}
+}
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
+// ── DATAS ─────────────────────────────────────────────────────────────────────
+function addMonths(date, n) {
+  const d = new Date(date);
+  d.setMonth(d.getMonth() + n);
+  return d;
+}
+function fmtDate(d) {
+  if (!d) return '—';
+  // Evitar problema de fuso horário — interpretar como data local
+  if (typeof d === 'string' && d.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    const [y,m,day] = d.split('-').map(Number);
+    return `${String(day).padStart(2,'0')}/${String(m).padStart(2,'0')}/${y}`;
+  }
+  const dt = new Date(d);
+  return dt.toLocaleDateString('pt-BR');
+}
+function fmtMoeda(v) {
+  if (v === null || v === undefined || v === '') return '—';
+  return Number(v).toLocaleString('pt-BR', {style:'currency',currency:'BRL'});
+}
+function today() { return new Date(); today.setHours(0,0,0,0); }
+
+// ── CÁLCULO DE COMISSÕES ──────────────────────────────────────────────────────
+function calcBase(credito, meiaParc) {
+  return meiaParc === 'Sim' ? credito / 2 : credito;
+}
+
+function parseLocalDate(str) {
+  if (!str) return null;
+  const [y,m,d] = str.split('-').map(Number);
+  return new Date(y, m-1, d);
+}
+
+function calcDataCom1(dataVenda, dataAlocacao) {
+  const dv = parseLocalDate(dataVenda);
+  const da = parseLocalDate(dataAlocacao);
+  // Ciclo: alocado até dia 25 do mês da venda  dia 05 mês seguinte
+  const lim25MesVenda = new Date(dv.getFullYear(), dv.getMonth(), 25);
+  const lim25MesSeg   = new Date(dv.getFullYear(), dv.getMonth()+1, 25);
+  if (da <= lim25MesVenda) {
+    return new Date(dv.getFullYear(), dv.getMonth()+1, 5);
+  } else if (da <= lim25MesSeg) {
+    return new Date(dv.getFullYear(), dv.getMonth()+1, 20);
+  } else {
+    return new Date(dv.getFullYear(), dv.getMonth()+2, 5);
+  }
+}
+
+function calcDatasComissao(dataVenda, dataAlocacao, posAssembleia) {
+  const dv = parseLocalDate(dataVenda);
+  const d1 = calcDataCom1(dataVenda, dataAlocacao);
+  // 2ª em diante: pós-assembleia  +2 meses; pré  +1 mês (dia 20, consecutivo)
+  const offset = posAssembleia === 'Sim' ? 2 : 1;
+  const d2 = new Date(dv.getFullYear(), dv.getMonth()+offset, 20);
+  const d3 = new Date(d2.getFullYear(), d2.getMonth()+1, 20);
+  const d4 = new Date(d3.getFullYear(), d3.getMonth()+1, 20);
+  const d5 = new Date(d4.getFullYear(), d4.getMonth()+1, 20);
+  return [d1,d2,d3,d4,d5];
+}
+
+const PCTS_HS = [0.015, 0.005, 0.005, 0.005, 0.010];
+
+function calcComissoes(cliente) {
+  if (!cliente.dataVenda || !cliente.dataAlocacao) return [];
+  // Só calcula comissão se contrato estiver alocado
+  if (cliente.statusHS !== 'Alocado' || cliente.contrato !== 'Sim') return [];
+  const base    = calcBase(Number(cliente.credito), cliente.meiaParc);
+  const datas   = calcDatasComissao(cliente.dataVenda, cliente.dataAlocacao, cliente.posAssembleia);
+  const status  = cliente.status;
+  const hoje    = new Date(); hoje.setHours(0,0,0,0);
+  // Data de corte para inadimplência: usa dataInadimplencia se disponível, senão hoje
+  const dataCorte = cliente.dataInadimplencia
+    ? parseLocalDate(cliente.dataInadimplencia)
+    : hoje;
+
+  return datas.map((data, i) => {
+    let valor = Math.round(base * PCTS_HS[i] * 100) / 100;
+    if (status === 'CANCELADO') valor = 0;
+    if (status === 'INADIMPLENTE' && data >= dataCorte) valor = 0;
+    return { data, valor, parcela: i+1 };
+  });
+}
+
+function calcPgtosParceiro(dataVenda, posAssembleia) {
+  const dv = parseLocalDate(dataVenda);
+  const offset = posAssembleia === 'Sim' ? 2 : 1;
+  const base = new Date(dv.getFullYear(), dv.getMonth()+offset, 10);
+  return Array.from({length:5}, (_,i) => new Date(base.getFullYear(), base.getMonth()+i, 10));
+}
+
+function calcComissoesParceiro(cliente, parceiro) {
+  if (!parceiro || !cliente.dataVenda) return [];
+  // Só calcula se contrato alocado
+  if (cliente.statusHS !== 'Alocado' || cliente.contrato !== 'Sim') return [];
+  const base  = calcBase(Number(cliente.credito), cliente.meiaParc);
+  const pct   = parceiro.pct / 100;
+  const valParc = Math.round(base * pct / 5 * 100) / 100;
+  const valEmp  = Math.round(valParc / 2 * 100) / 100;
+  const valCons = Math.round(valParc / 2 * 100) / 100;
+  const pgtos   = calcPgtosParceiro(cliente.dataVenda, cliente.posAssembleia);
+  const status  = cliente.status;
+  const hoje    = new Date(); hoje.setHours(0,0,0,0);
+
+  return pgtos.map((data, i) => {
+    let vt = valParc, ve = valEmp, vc = valCons;
+    const dataCorte2 = cliente.dataInadimplencia
+      ? parseLocalDate(cliente.dataInadimplencia)
+      : hoje;
+    if (status === 'CANCELADO') { vt=ve=vc=0; }
+    if (status === 'INADIMPLENTE' && data >= dataCorte2) { vt=ve=vc=0; }
+    return { data, valTotal:vt, valEmp:ve, valCons:vc, parcela:i+1 };
+  });
+}
+
+function calcEstorno(cliente) {
+  if (cliente.status !== 'CANCELADO') return 0;
+  if (!cliente.dataAlocacao) return 0;
+  const da    = parseLocalDate(cliente.dataAlocacao);
+  const lim   = new Date(da.getFullYear(), da.getMonth()+8, da.getDate());
+  const hoje  = new Date(); hoje.setHours(0,0,0,0);
+  if (hoje > lim) return 0;
+  const coms  = calcComissoes({...cliente, status:'ATIVO'});
+  return coms.filter(c => c.data <= hoje).reduce((s,c) => s + c.valor, 0);
+}
+
+// ── UTILS ─────────────────────────────────────────────────────────────────────
+function showView(view, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-'+view).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (view==='dashboard') renderDashboard();
+  if (view==='clientes')  renderClientes();
+  if (view==='comissoes') renderComissoes();
+  if (view==='parceiros') renderParceiros();
+  if (view==='relatorio') popularEmpresasRelatorio();
+}
+
+function fecharModal(id) { document.getElementById(id).classList.remove('open'); }
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+}
+
+function badgeStatus(status) {
+  const map = {
+    'ATIVO':'badge-ativo','INADIMPLENTE':'badge-inadimplente',
+    'CANCELADO':'badge-cancelado','INATIVO':'badge-inativo'
+  };
+  return `<span class="badge ${map[status]||''}">${status}</span>`;
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────────────────────
+function renderDashboard() {
+  const d   = getData();
+  const mes = parseInt(document.getElementById('dash-mes').value);
+  const ano = 2026;
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+
+  document.getElementById('dash-periodo').textContent =
+    `${MESES[mes]}/${ano} — ${d.clientes.length} contratos cadastrados`;
+
+  // Calcular valores
+  let d20Ant=0, d05=0, d20Atu=0, estornos=0;
+  const mesPrev = mes===1?12:mes-1;
+  const anoPrev = mes===1?ano-1:ano;
+
+  const clienteRows = [];
+
+  d.clientes.forEach(cli => {
+    if (!cli.dataVenda || !cli.dataAlocacao) return;
+    const coms = calcComissoes(cli);
+    let cli20Ant=0, cli05=0, cli20Atu=0;
+
+    coms.forEach(c => {
+      const cm = c.data.getMonth()+1;
+      const cy = c.data.getFullYear();
+      const cd = c.data.getDate();
+      const excl = cli.status==='CANCELADO' || (cli.status==='INADIMPLENTE' && c.data>=hoje);
+      if (excl) return;
+      if (cd===20 && cm===mesPrev && cy===anoPrev) { d20Ant+=c.valor; cli20Ant+=c.valor; }
+      if (cd===5  && cm===mes    && cy===ano)      { d05+=c.valor;    cli05+=c.valor; }
+      if (cd===20 && cm===mes    && cy===ano)      { d20Atu+=c.valor; cli20Atu+=c.valor; }
+    });
+
+    estornos += calcEstorno(cli);
+    if (cli20Ant||cli05||cli20Atu) {
+      clienteRows.push({nome:cli.nome, cli20Ant, cli05, cli20Atu, totalNF:cli20Ant+cli05});
+    }
+  });
+
+  const totalNF = d20Ant + d05;
+  const liquido = totalNF - estornos;
+
+  // Total vendas
+  const ativos = d.clientes.filter(c=>c.status==='ATIVO'||c.status==='INADIMPLENTE');
+  const totalVendas = ativos.reduce((s,c)=>s+Number(c.credito||0),0);
+
+  // Cards
+  document.getElementById('dash-cards').innerHTML = `
+    <div class="card"><div class="card-label">Adiant. Dia 20 (mês ant.)</div>
+      <div class="card-value">${fmtMoeda(d20Ant)}</div><div class="card-sub">${MESES[mesPrev]}/${anoPrev}</div></div>
+    <div class="card"><div class="card-label">Recebimento Dia 05</div>
+      <div class="card-value blue">${fmtMoeda(d05)}</div><div class="card-sub">${MESES[mes]}/${ano}</div></div>
+    <div class="card"><div class="card-label">Total NF</div>
+      <div class="card-value green">${fmtMoeda(totalNF)}</div><div class="card-sub">Adiant. + Dia 05</div></div>
+    ${estornos>0?`<div class="card"><div class="card-label">Estornos</div>
+      <div class="card-value red">${fmtMoeda(estornos)}</div></div>`:''}
+    <div class="card"><div class="card-label">Adiant. Dia 20 (mês atual)</div>
+      <div class="card-value purple">${fmtMoeda(d20Atu)}</div><div class="card-sub">Entra na NF do próximo mês</div></div>
+  `;
+
+  // Tabela clientes
+  const tbody = document.getElementById('dash-clientes');
+  if (clienteRows.length===0) {
+    tbody.innerHTML = `<tr><td colspan="5" class="muted" style="text-align:center;padding:24px;">Nenhuma comissão neste mês</td></tr>`;
+  } else {
+    tbody.innerHTML = clienteRows.map(r=>`
+      <tr>
+        <td>${r.nome}</td>
+        <td class="${r.cli20Ant?'gold':'muted'}">${r.cli20Ant?fmtMoeda(r.cli20Ant):'—'}</td>
+        <td class="${r.cli05?'blue':'muted'}">${r.cli05?fmtMoeda(r.cli05):'—'}</td>
+        <td class="${r.totalNF?'green':'muted'}">${r.totalNF?fmtMoeda(r.totalNF):'—'}</td>
+        <td class="${r.cli20Atu?'purple':'muted'}">${r.cli20Atu?fmtMoeda(r.cli20Atu):'—'}</td>
+      </tr>
+    `).join('');
+  }
+
+  // Total vendas
+  document.getElementById('dash-total-vendas').textContent = fmtMoeda(totalVendas);
+  document.getElementById('dash-total-contratos').textContent =
+    `${ativos.length} contrato${ativos.length!==1?'s':''} ativo${ativos.length!==1?'s':''}`;
+}
+
+// ── CLIENTES ──────────────────────────────────────────────────────────────────
+let filtroClienteAtivo = 'todos';
+function filtrarClientes(f, btn) {
+  filtroClienteAtivo = f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderClientes();
+}
+
+
+function alterarStatus(id, novoStatus, selectEl) {
+  const d = getData();
+  const idx = d.clientes.findIndex(c=>c.id===id);
+  if (idx<0) return;
+  d.clientes[idx].status = novoStatus;
+  // Salvar data de inadimplência quando status mudar para INADIMPLENTE
+  if (novoStatus === 'INADIMPLENTE' && !d.clientes[idx].dataInadimplencia) {
+    const dataInput = prompt(
+      'A partir de qual data ficou inadimplente?\n(formato: AAAA-MM-DD, ex: 2026-04-01)',
+      new Date().toISOString().split('T')[0]
+    );
+    d.clientes[idx].dataInadimplencia = dataInput || new Date().toISOString().split('T')[0];
+  }
+  // Limpar data de inadimplência quando voltar para ATIVO
+  if (novoStatus === 'ATIVO') {
+    d.clientes[idx].dataInadimplencia = null;
+  }
+  saveData(d);
+  // Atualizar classe do select
+  selectEl.className = 'status-select ' + novoStatus.toLowerCase();
+  showToast('Status atualizado: ' + novoStatus);
+  // Re-renderizar tudo que depende do status
+  if (document.getElementById('view-dashboard').classList.contains('active')) renderDashboard();
+  if (document.getElementById('view-comissoes').classList.contains('active')) renderComissoes();
+  // Forçar re-render do dashboard em background (para quando voltar a ele)
+  renderDashboard();
+}
+
+function renderClientes() {
+  const d    = getData();
+  const busca = (document.getElementById('search-clientes')?.value||'').toLowerCase();
+  let lista  = d.clientes;
+  if (filtroClienteAtivo!=='todos') lista = lista.filter(c=>c.status===filtroClienteAtivo);
+  if (busca) lista = lista.filter(c=>c.nome.toLowerCase().includes(busca));
+
+  const el = document.getElementById('lista-clientes');
+  if (lista.length===0) {
+    el.innerHTML=`<div class="empty"><div class="empty-icon">📋</div><div class="empty-msg">Nenhuma venda encontrada</div></div>`;
+    return;
+  }
+
+  el.innerHTML = `<div class="table-wrap"><table>
+    <thead><tr>
+      <th>Nome</th><th>Status</th><th>Tipo</th><th>Produto</th>
+      <th>Crédito</th><th>Venda</th><th>Alocação</th><th>Ações</th>
+    </tr></thead>
+    <tbody>${lista.map(c=>`
+      <tr>
+        <td style="font-weight:500;color:var(--text)">${c.nome}</td>
+        <td><select class="status-select ${c.status.toLowerCase()}" onchange="alterarStatus('${c.id}',this.value,this)" onclick="event.stopPropagation()">
+          <option value="ATIVO" ${c.status==='ATIVO'?'selected':''}>ATIVO</option>
+          <option value="INADIMPLENTE" ${c.status==='INADIMPLENTE'?'selected':''}>INADIMPLENTE</option>
+          <option value="CANCELADO" ${c.status==='CANCELADO'?'selected':''}>CANCELADO</option>
+          <option value="INATIVO" ${c.status==='INATIVO'?'selected':''}>INATIVO</option>
+        </select></td>
+        <td><span class="badge ${c.tipo==='Indicação'?'badge-avencer':'badge-direto'}">${c.tipo}</span></td>
+        <td class="muted">${c.produto||'—'}</td>
+        <td class="gold">${fmtMoeda(c.credito)}</td>
+        <td class="muted">${fmtDate(c.dataVenda)}</td>
+        <td class="muted">${fmtDate(c.dataAlocacao)}</td>
+        <td><div class="row-actions">
+          <button class="btn btn-ghost btn-sm" onclick="abrirDetalhe('${c.id}')">Ver</button>
+          <button class="btn btn-ghost btn-sm" onclick="editarCliente('${c.id}')">Editar</button>
+          <button class="btn btn-danger btn-sm" onclick="excluirCliente('${c.id}')">✕</button>
+        </div></td>
+      </tr>
+    `).join('')}</tbody>
+  </table></div>`;
+}
+
+function abrirNovoCliente() {
+  document.getElementById('cliente-id-edit').value = '';
+  document.getElementById('modal-cliente-title').textContent = 'Nova Venda';
+  document.getElementById('cli-status').value = 'ATIVO';
+  document.getElementById('cli-tipo').value = 'Direto';
+  document.getElementById('cli-nome').value = '';
+  document.getElementById('cli-cpf').value = '';
+  document.getElementById('cli-tel').value = '';
+  document.getElementById('cli-uf').value = 'PB';
+  document.getElementById('cli-cidade').value = '';
+  document.getElementById('cli-produto').value = 'HS Consórcio';
+  document.getElementById('cli-credito').value = '';
+  document.getElementById('cli-meia').value = 'Sim';
+  document.getElementById('cli-pos').value = 'Sim';
+  document.getElementById('cli-data-venda').value = '';
+  document.getElementById('cli-data-alocacao').value = '';
+  document.getElementById('cli-status-hs').value = 'Alocado';
+  document.getElementById('cli-contrato').value = 'Sim';
+  document.getElementById('cli-campanha').value = '';
+  toggleParceiro();
+  document.getElementById('modal-cliente').classList.add('open');
+}
+
+function toggleParceiro() {
+  const tipo = document.getElementById('cli-tipo').value;
+  const campo = document.getElementById('campo-parceiro');
+  campo.style.display = tipo==='Indicação' ? 'block' : 'none';
+  if (tipo==='Indicação') popularDropdownsParceiro();
+}
+
+function popularDropdownsParceiro() {
+  const d = getData();
+  const empresas = [...new Set(d.parceiros.map(p=>p.empresa).filter(Boolean))];
+  const empSel = document.getElementById('cli-empresa-parceiro');
+  empSel.innerHTML = '<option value="">Selecionar...</option>' +
+    empresas.map(e=>`<option value="${e}">${e}</option>`).join('');
+  empSel.onchange = () => {
+    const emp = empSel.value;
+    const cons = d.parceiros.filter(p=>p.empresa===emp);
+    document.getElementById('cli-consultor').innerHTML =
+      '<option value="">Selecionar...</option>' +
+      cons.map(c=>`<option value="${c.consultor}">${c.consultor}</option>`).join('');
+  };
+}
+
+function salvarCliente() {
+  const nome = document.getElementById('cli-nome').value.trim();
+  const credito = document.getElementById('cli-credito').value;
+  const dataVenda = document.getElementById('cli-data-venda').value;
+  const dataAlocacao = document.getElementById('cli-data-alocacao').value;
+  if (!nome||!credito||!dataVenda||!dataAlocacao) { showToast('Preencha os campos obrigatórios'); return; }
+
+  const d  = getData();
+  const id = document.getElementById('cliente-id-edit').value;
+
+  const cli = {
+    id: id||uid(),
+    status: document.getElementById('cli-status').value,
+    tipo:   document.getElementById('cli-tipo').value,
+    nome, cpf: document.getElementById('cli-cpf').value,
+    tel: document.getElementById('cli-tel').value,
+    uf: document.getElementById('cli-uf').value,
+    cidade: document.getElementById('cli-cidade').value,
+    empresaParceiro: document.getElementById('cli-empresa-parceiro').value,
+    consultor: document.getElementById('cli-consultor').value,
+    produto: document.getElementById('cli-produto').value,
+    credito: Number(credito),
+    meiaParc: document.getElementById('cli-meia').value,
+    posAssembleia: document.getElementById('cli-pos').value,
+    dataVenda, dataAlocacao,
+    statusHS: document.getElementById('cli-status-hs').value,
+    contrato: document.getElementById('cli-contrato').value,
+    campanha: document.getElementById('cli-campanha').value,
+  };
+
+  if (id) {
+    const idx = d.clientes.findIndex(c=>c.id===id);
+    if (idx>=0) d.clientes[idx]=cli;
+  } else {
+    d.clientes.push(cli);
+  }
+  saveData(d);
+  fecharModal('modal-cliente');
+  renderClientes();
+  showToast(id?'Venda atualizada!':'Venda cadastrada!');
+}
+
+function editarCliente(id) {
+  const d = getData();
+  const cli = d.clientes.find(c=>c.id===id);
+  if (!cli) return;
+  document.getElementById('cliente-id-edit').value = id;
+  document.getElementById('modal-cliente-title').textContent = 'Editar Venda';
+  document.getElementById('cli-status').value = cli.status||'ATIVO';
+  document.getElementById('cli-tipo').value = cli.tipo||'Direto';
+  document.getElementById('cli-nome').value = cli.nome||'';
+  document.getElementById('cli-cpf').value = cli.cpf||'';
+  document.getElementById('cli-tel').value = cli.tel||'';
+  document.getElementById('cli-uf').value = cli.uf||'PB';
+  document.getElementById('cli-cidade').value = cli.cidade||'';
+  document.getElementById('cli-produto').value = cli.produto||'HS Consórcio';
+  document.getElementById('cli-credito').value = cli.credito||'';
+  document.getElementById('cli-meia').value = cli.meiaParc||'Sim';
+  document.getElementById('cli-pos').value = cli.posAssembleia||'Sim';
+  document.getElementById('cli-data-venda').value = cli.dataVenda||'';
+  document.getElementById('cli-data-alocacao').value = cli.dataAlocacao||'';
+  document.getElementById('cli-status-hs').value = cli.statusHS||'Alocado';
+  document.getElementById('cli-contrato').value = cli.contrato||'Sim';
+  document.getElementById('cli-campanha').value = cli.campanha||'';
+  toggleParceiro();
+  if (cli.tipo==='Indicação') {
+    setTimeout(()=>{
+      document.getElementById('cli-empresa-parceiro').value = cli.empresaParceiro||'';
+      document.getElementById('cli-empresa-parceiro').dispatchEvent(new Event('change'));
+      setTimeout(()=>{ document.getElementById('cli-consultor').value = cli.consultor||''; },50);
+    },50);
+  }
+  fecharModal('modal-detalhe');
+  document.getElementById('modal-cliente').classList.add('open');
+}
+
+function excluirCliente(id) {
+  if (!confirm('Confirma a exclusão deste cliente?')) return;
+  const d = getData();
+  d.clientes = d.clientes.filter(c=>c.id!==id);
+  saveData(d);
+  fecharModal('modal-detalhe');
+  renderClientes();
+  showToast('Venda excluída');
+}
+
+function abrirDetalhe(id) {
+  const d   = getData();
+  const cli = d.clientes.find(c=>c.id===id);
+  if (!cli) return;
+  const coms = calcComissoes(cli);
+  const par  = d.parceiros.find(p=>p.consultor===cli.consultor);
+  const estorno = calcEstorno(cli);
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+
+  document.getElementById('detalhe-nome').textContent = cli.nome;
+  document.getElementById('detalhe-editar').onclick = ()=>editarCliente(id);
+  document.getElementById('detalhe-excluir').onclick = ()=>excluirCliente(id);
+
+  let parcHtml = `<div class="parcelas-grid">` + coms.map((c,i)=>{
+    const past = c.data < hoje;
+    const pct = PCTS_HS[i]*100;
+    return `<div class="parcela-item ${past?'past':''}">
+      <div class="parcela-num">${i+1}ª (${pct}%)</div>
+      <div class="parcela-data">${c.data.toLocaleDateString('pt-BR')}</div>
+      <div class="parcela-val ${c.valor===0?'zero':''}">${fmtMoeda(c.valor)}</div>
+    </div>`;
+  }).join('') + `</div>`;
+
+  let parHtml = '';
+  if (par && cli.tipo==='Indicação') {
+    const pgtos = calcComissoesParceiro(cli, par);
+    parHtml = `<div class="divider"></div>
+    <div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;margin-bottom:10px;">
+      Comissão Parceiro — ${par.consultor} (${par.empresa}) — ${par.pct}%
+    </div>
+    <div class="parcelas-grid">${pgtos.map((p,i)=>`
+      <div class="parcela-item ${p.data<hoje?'past':''}">
+        <div class="parcela-num">${i+1}ª parcela</div>
+        <div class="parcela-data">${p.data.toLocaleDateString('pt-BR')}</div>
+        <div class="parcela-val ${p.valTotal===0?'zero':''}">${fmtMoeda(p.valTotal)}</div>
+      </div>
+    `).join('')}</div>`;
+  }
+
+  document.getElementById('detalhe-content').innerHTML = `
+    <div class="detail-row"><span class="detail-key">Status</span>${badgeStatus(cli.status)}</div>
+    <div class="detail-row"><span class="detail-key">Tipo</span>
+      <span class="badge ${cli.tipo==='Indicação'?'badge-avencer':'badge-direto'}">${cli.tipo}</span></div>
+    <div class="detail-row"><span class="detail-key">Produto</span><span class="detail-val">${cli.produto||'—'}</span></div>
+    <div class="detail-row"><span class="detail-key">Crédito</span><span class="detail-val gold">${fmtMoeda(cli.credito)}</span></div>
+    <div class="detail-row"><span class="detail-key">Base Comissão</span>
+      <span class="detail-val">${fmtMoeda(calcBase(cli.credito,cli.meiaParc))} (meia parcela: ${cli.meiaParc})</span></div>
+    <div class="detail-row"><span class="detail-key">Data da Venda</span><span class="detail-val">${fmtDate(cli.dataVenda)}</span></div>
+    <div class="detail-row"><span class="detail-key">Data de Alocação</span><span class="detail-val">${fmtDate(cli.dataAlocacao)}</span></div>
+    <div class="detail-row"><span class="detail-key">Pós Assembleia</span><span class="detail-val">${cli.posAssembleia}</span></div>
+    <div class="detail-row"><span class="detail-key">Status HS</span><span class="detail-val">${cli.statusHS||'—'}</span></div>
+    ${cli.campanha?`<div class="detail-row"><span class="detail-key">Campanha</span><span class="detail-val">${cli.campanha}</span></div>`:''}
+    ${cli.dataInadimplencia?`<div class="detail-row"><span class="detail-key">⚠ Inadimplente desde</span><span class="detail-val" style="color:var(--amber)">${fmtDate(cli.dataInadimplencia)}</span></div>`:''}
+    ${estorno>0?`<div class="detail-row"><span class="detail-key">⚠ Estorno</span><span class="detail-val red">${fmtMoeda(estorno)}</span></div>`:''}
+    <div class="divider"></div>
+    <div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;margin-bottom:10px;">
+      Parcelas de Comissão Integrus (4%)
+    </div>
+    ${parcHtml}
+    ${parHtml}
+  `;
+
+  document.getElementById('modal-detalhe').classList.add('open');
+}
+
+// ── COMISSÕES ─────────────────────────────────────────────────────────────────
+function renderComissoes() {
+  const d   = getData();
+  const mes = parseInt(document.getElementById('com-mes').value);
+  const ano = 2026;
+  const mesPrev = mes===1?12:mes-1;
+  const anoPrev = mes===1?ano-1:ano;
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+
+  let d20Ant=0, d05=0, d20Atu=0, estTotal=0;
+  const linhas = [];
+  const estornos = [];
+
+  d.clientes.forEach(cli => {
+    if (!cli.dataVenda||!cli.dataAlocacao) return;
+    const coms = calcComissoes(cli);
+    coms.forEach(c => {
+      const cm=c.data.getMonth()+1, cy=c.data.getFullYear(), cd=c.data.getDate();
+      const excl = cli.status==='CANCELADO'||(cli.status==='INADIMPLENTE'&&c.data>=hoje);
+      if (!excl) {
+        if (cd===20&&cm===mesPrev&&cy===anoPrev) d20Ant+=c.valor;
+        if (cd===5 &&cm===mes   &&cy===ano)      d05+=c.valor;
+        if (cd===20&&cm===mes   &&cy===ano)      d20Atu+=c.valor;
+      }
+      // Linhas da tabela (mês atual)
+      if ((cm===mes&&cy===ano&&cd===5)||(cm===mes&&cy===ano&&cd===20)) {
+        const tipo = cd===5?'Dia 05':'Dia 20 (Adiant.)';
+        const status = excl?'Cancelada/Inadimp.':'Prevista';
+        linhas.push({nome:cli.nome, parcela:c.parcela, data:c.data, tipo, valor:c.valor, status, excl});
+      }
+    });
+    const est = calcEstorno(cli);
+    if (est>0) {
+      estTotal+=est;
+      estornos.push({nome:cli.nome, dataAloc:cli.dataAlocacao, est});
+    }
+  });
+
+  linhas.sort((a,b)=>a.data-b.data);
+
+  document.getElementById('com-cards').innerHTML = `
+    <div class="card"><div class="card-label">Adiant. Dia 20 (mês ant.)</div>
+      <div class="card-value">${fmtMoeda(d20Ant)}</div></div>
+    <div class="card"><div class="card-label">Recebimento Dia 05</div>
+      <div class="card-value blue">${fmtMoeda(d05)}</div></div>
+    <div class="card"><div class="card-label">Total NF</div>
+      <div class="card-value green">${fmtMoeda(d20Ant+d05)}</div></div>
+    <div class="card"><div class="card-label">Adiant. Dia 20 (mês atual)</div>
+      <div class="card-value purple">${fmtMoeda(d20Atu)}</div></div>
+    ${estTotal>0?`<div class="card"><div class="card-label">⚠ Estornos</div>
+      <div class="card-value red">${fmtMoeda(estTotal)}</div></div>`:''}
+  `;
+
+  const tbody = document.getElementById('com-lista');
+  if (linhas.length===0) {
+    tbody.innerHTML = `<tr><td colspan="6" class="muted" style="text-align:center;padding:24px;">Nenhuma comissão neste mês</td></tr>`;
+  } else {
+    tbody.innerHTML = linhas.map(l=>`
+      <tr>
+        <td style="color:var(--text)">${l.nome}</td>
+        <td class="muted">${l.parcela}ª</td>
+        <td class="muted">${l.data.toLocaleDateString('pt-BR')}</td>
+        <td><span class="com-badge ${l.tipo.includes('20')?'com-pendente':'com-recebida'}">${l.tipo}</span></td>
+        <td class="${l.excl?'red':'gold'}">${fmtMoeda(l.valor)}</td>
+        <td><span class="com-badge ${l.excl?'com-cancelada':'com-recebida'}">${l.status}</span></td>
+      </tr>
+    `).join('');
+  }
+
+  const estWrap = document.getElementById('estornos-wrap');
+  if (estornos.length>0) {
+    estWrap.style.display='block';
+    document.getElementById('estornos-lista').innerHTML = estornos.map(e=>`
+      <tr>
+        <td style="color:var(--text)">${e.nome}</td>
+        <td class="muted">${fmtDate(e.dataAloc)}</td>
+        <td class="muted">${fmtDate(new Date(new Date(e.dataAloc).setMonth(new Date(e.dataAloc).getMonth()+8)))}</td>
+        <td class="red">${fmtMoeda(e.est)}</td>
+      </tr>
+    `).join('');
+  } else { estWrap.style.display='none'; }
+}
+
+// ── PARCEIROS ─────────────────────────────────────────────────────────────────
+function renderParceiros() {
+  const d = getData();
+  const el = document.getElementById('lista-parceiros');
+  if (d.parceiros.length===0) {
+    el.innerHTML=`<div class="empty"><div class="empty-icon">🤝</div><div class="empty-msg">Nenhum parceiro cadastrado</div></div>`;
+    return;
+  }
+  el.innerHTML=`<div class="table-wrap"><table>
+    <thead><tr>
+      <th>Empresa</th><th>Consultor</th><th>Cargo</th>
+      <th>% Comissão</th><th>Telefone</th><th>Status</th><th>Ações</th>
+    </tr></thead>
+    <tbody>${d.parceiros.map(p=>`
+      <tr>
+        <td style="color:var(--text);font-weight:500">${p.empresa||'—'}</td>
+        <td>${p.consultor}</td>
+        <td class="muted">${p.cargo||'—'}</td>
+        <td class="gold">${p.pct}%</td>
+        <td class="muted">${p.tel||'—'}</td>
+        <td><span class="badge ${p.status==='ATIVO'?'badge-ativo':'badge-inativo'}">${p.status}</span></td>
+        <td><div class="row-actions">
+          <button class="btn btn-ghost btn-sm" onclick="editarParceiro('${p.id}')">Editar</button>
+          <button class="btn btn-danger btn-sm" onclick="excluirParceiro('${p.id}')">✕</button>
+        </div></td>
+      </tr>
+    `).join('')}</tbody>
+  </table></div>`;
+}
+
+function abrirNovoParceiro() {
+  document.getElementById('parceiro-id-edit').value='';
+  document.getElementById('modal-parceiro-title').textContent='Novo Parceiro';
+  ['par-empresa','par-cnpj','par-consultor','par-cpf','par-tel','par-cidade'].forEach(id=>{
+    document.getElementById(id).value='';
+  });
+  document.getElementById('par-cargo').value='Proprietário';
+  document.getElementById('par-pct').value='';
+  document.getElementById('par-uf').value='PB';
+  document.getElementById('par-status').value='ATIVO';
+  document.getElementById('modal-parceiro').classList.add('open');
+}
+
+function salvarParceiro() {
+  const consultor = document.getElementById('par-consultor').value.trim();
+  const pct       = document.getElementById('par-pct').value;
+  if (!consultor||!pct) { showToast('Preencha nome e % comissão'); return; }
+
+  const d  = getData();
+  const id = document.getElementById('parceiro-id-edit').value;
+  const par = {
+    id: id||uid(),
+    empresa: document.getElementById('par-empresa').value.trim(),
+    cnpj:    document.getElementById('par-cnpj').value.trim(),
+    consultor, cpf: document.getElementById('par-cpf').value.trim(),
+    cargo:   document.getElementById('par-cargo').value,
+    pct:     Number(pct),
+    tel:     document.getElementById('par-tel').value.trim(),
+    uf:      document.getElementById('par-uf').value,
+    cidade:  document.getElementById('par-cidade').value.trim(),
+    status:  document.getElementById('par-status').value,
+  };
+
+  if (id) {
+    const idx=d.parceiros.findIndex(p=>p.id===id);
+    if (idx>=0) d.parceiros[idx]=par;
+  } else { d.parceiros.push(par); }
+
+  saveData(d);
+  fecharModal('modal-parceiro');
+  renderParceiros();
+  showToast(id?'Parceiro atualizado!':'Parceiro cadastrado!');
+}
+
+function editarParceiro(id) {
+  const d = getData();
+  const p = d.parceiros.find(x=>x.id===id);
+  if (!p) return;
+  document.getElementById('parceiro-id-edit').value=id;
+  document.getElementById('modal-parceiro-title').textContent='Editar Parceiro';
+  document.getElementById('par-empresa').value=p.empresa||'';
+  document.getElementById('par-cnpj').value=p.cnpj||'';
+  document.getElementById('par-consultor').value=p.consultor||'';
+  document.getElementById('par-cpf').value=p.cpf||'';
+  document.getElementById('par-cargo').value=p.cargo||'Proprietário';
+  document.getElementById('par-pct').value=p.pct||'';
+  document.getElementById('par-tel').value=p.tel||'';
+  document.getElementById('par-uf').value=p.uf||'PB';
+  document.getElementById('par-cidade').value=p.cidade||'';
+  document.getElementById('par-status').value=p.status||'ATIVO';
+  document.getElementById('modal-parceiro').classList.add('open');
+}
+
+function excluirParceiro(id) {
+  if (!confirm('Confirma exclusão do parceiro?')) return;
+  const d=getData();
+  d.parceiros=d.parceiros.filter(p=>p.id!==id);
+  saveData(d);
+  renderParceiros();
+  showToast('Parceiro excluído');
+}
+
+// ── RELATÓRIO ─────────────────────────────────────────────────────────────────
+function popularEmpresasRelatorio() {
+  const d = getData();
+  const empresas = [...new Set(d.parceiros.map(p=>p.empresa).filter(Boolean))];
+  const sel = document.getElementById('rel-empresa');
+  sel.innerHTML = '<option value="">Selecionar...</option>' +
+    empresas.map(e=>`<option value="${e}">${e}</option>`).join('');
+}
+
+function gerarRelatorio() {
+  const d     = getData();
+  const mes   = parseInt(document.getElementById('rel-mes').value);
+  const emp   = document.getElementById('rel-empresa').value;
+  const ano   = 2026;
+  const hoje  = new Date(); hoje.setHours(0,0,0,0);
+
+  if (!emp) { showToast('Selecione uma empresa'); return; }
+
+  // Parceiros desta empresa
+  const parsEmp = d.parceiros.filter(p=>p.empresa===emp);
+  if (parsEmp.length===0) { showToast('Nenhum parceiro desta empresa'); return; }
+
+  // Clientes com parceiros desta empresa
+  const linhas = [];
+  let totalBruto=0, totalEmp=0, totalCons=0, totalDesc=0, totalLiq=0;
+
+  d.clientes.forEach(cli => {
+    if (!cli.dataVenda||cli.tipo!=='Indicação') return;
+    const par = parsEmp.find(p=>p.consultor===cli.consultor);
+    if (!par) return;
+
+    const pgtos = calcPgtosParceiro(cli.dataVenda, cli.posAssembleia);
+    const coms  = calcComissoesParceiro(cli, par);
+
+    coms.forEach((c,i) => {
+      const pm=c.data.getMonth()+1, py=c.data.getFullYear();
+      if (pm!==mes||py!==ano) return;
+      if (c.valTotal===0&&cli.status!=='CANCELADO') return;
+
+      totalBruto += c.valTotal;
+      totalEmp   += c.valEmp;
+      totalCons  += c.valCons;
+      totalLiq   += c.valTotal; // desconto manual, por enquanto = bruto
+
+      linhas.push({
+        consultor: par.consultor,
+        cargo: par.cargo,
+        nome: cli.nome,
+        parcela: i+1,
+        dataPgt: c.data,
+        valTotal: c.valTotal,
+        valEmp: c.valEmp,
+        valCons: c.valCons,
+        status: c.valTotal===0?'Cancelado':'A Pagar'
+      });
+    });
+  });
+
+  const el = document.getElementById('rel-resultado');
+  if (linhas.length===0) {
+    el.innerHTML=`<div class="empty"><div class="empty-icon">📄</div><div class="empty-msg">Nenhuma comissão para ${emp} em ${MESES[mes]}/${ano}</div></div>`;
+    return;
+  }
+
+  el.innerHTML = `
+    <div class="rel-empresa-card">
+      <div class="rel-empresa-header">
+        <div>
+          <div class="rel-empresa-nome">${emp}</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:2px;">${MESES[mes]}/${ano} — Emissão: ${new Date().toLocaleDateString('pt-BR')}</div>
+        </div>
+        <div class="rel-totais">
+          <div class="rel-total-item">
+            <div class="rel-total-label">Total Bruto</div>
+            <div class="rel-total-val">${fmtMoeda(totalBruto)}</div>
+          </div>
+          <div class="rel-total-item">
+            <div class="rel-total-label">Empresa (50%)</div>
+            <div class="rel-total-val emp">${fmtMoeda(totalEmp)}</div>
+          </div>
+          <div class="rel-total-item">
+            <div class="rel-total-label">Consultor (50%)</div>
+            <div class="rel-total-val cons">${fmtMoeda(totalCons)}</div>
+          </div>
+          <div class="rel-total-item">
+            <div class="rel-total-label">Líquido</div>
+            <div class="rel-total-val liq">${fmtMoeda(totalLiq)}</div>
+          </div>
+        </div>
+      </div>
+      <table>
+        <thead><tr>
+          <th>Consultor</th><th>Cargo</th><th>Venda</th><th>Parcela</th>
+          <th>Data PGT</th><th>Empresa (50%)</th><th>Consultor (50%)</th><th>Total</th><th>Status</th>
+        </tr></thead>
+        <tbody>${linhas.map(l=>`
+          <tr>
+            <td style="color:var(--text)">${l.consultor}</td>
+            <td class="muted">${l.cargo}</td>
+            <td>${l.nome}</td>
+            <td class="muted">${l.parcela}ª</td>
+            <td class="muted">${l.dataPgt.toLocaleDateString('pt-BR')}</td>
+            <td class="blue">${fmtMoeda(l.valEmp)}</td>
+            <td class="purple">${fmtMoeda(l.valCons)}</td>
+            <td class="gold">${fmtMoeda(l.valTotal)}</td>
+            <td><span class="com-badge ${l.status==='A Pagar'?'com-recebida':'com-cancelada'}">${l.status}</span></td>
+          </tr>
+        `).join('')}</tbody>
+      </table>
+    </div>
+    <div style="text-align:center;margin-top:8px;">
+      <button class="btn btn-ghost" onclick="window.print()">🖨 Imprimir / Salvar PDF</button>
+    </div>
+  `;
+}
+
+
+
+// ══════════════════════════════════════════════════════════════════
+// MÓDULO SELECTOR
+// ══════════════════════════════════════════════════════════════════
+function toggleModuloMenu() {
+  const menu = document.getElementById('modulo-menu');
+  const btn  = document.getElementById('modulo-btn');
+  const open = menu.style.display === 'block';
+  menu.style.display = open ? 'none' : 'block';
+  btn.classList.toggle('open', !open);
+}
+
+function selecionarModulo(mod) {
+  document.getElementById('modulo-menu').style.display = 'none';
+  document.getElementById('modulo-btn').classList.remove('open');
+  document.querySelectorAll('.modulo-view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.modulo-item').forEach(i => i.classList.remove('active'));
+  document.getElementById('modulo-' + mod).classList.add('active');
+  event.target.closest('.modulo-item').classList.add('active');
+
+  const info = {
+    hs:      { nome:'HS Consórcio',   icon:'📊' },
+    contas:  { nome:'Contas a Pagar', icon:'💸' },
+    pessoal: { nome:'Pessoal',        icon:'👤' },
+  };
+  document.getElementById('modulo-nome').textContent = (info[mod]||{nome:mod}).nome;
+  document.getElementById('modulo-icon').textContent = (info[mod]||{icon:'📊'}).icon;
+
+  if (mod === 'contas')  renderContasDashboard();
+  if (mod === 'pessoal') renderPessoalDashboard();
+  if (mod === 'hs')      renderDashboard();
+}
+
+// Fechar menu ao clicar fora
+document.addEventListener('click', e => {
+  if (!e.target.closest('#modulo-btn') && !e.target.closest('#modulo-menu')) {
+    const menu = document.getElementById('modulo-menu');
+    if (menu) menu.style.display = 'none';
+  }
+});
+
+// ══════════════════════════════════════════════════════════════════
+// CONTAS A PAGAR
+// ══════════════════════════════════════════════════════════════════
+const CONTAS_KEY = 'integrus_contas_v1';
+const MESES_CONTAS = ['','Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+
+function getContas() {
+  try {
+    const raw = localStorage.getItem(CONTAS_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return { contas: [], recorrentes: [] };
+}
+
+function saveContas(d) {
+  try { localStorage.setItem(CONTAS_KEY, JSON.stringify(d)); } catch(e) {}
+}
+
+function showContasView(view, btn) {
+  document.querySelectorAll('#modulo-contas .view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('#modulo-contas .nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-' + view).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (view === 'contas-dashboard') renderContasDashboard();
+  if (view === 'contas-lista') renderContasLista();
+  if (view === 'contas-recorrentes') renderRecorrentes();
+}
+
+function badgeContaStatus(status) {
+  const map = {
+    'PENDENTE': 'badge-avencer',
+    'VENCIDO':  'badge-cancelado',
+    'PAGO':     'badge-ativo'
+  };
+  return `<span class="badge ${map[status]||''}">${status}</span>`;
+}
+
+function catIcon(cat) {
+  const icons = {
+    'Contabilidade':'📊','Impostos':'📋','Veículo':'🚗',
+    'Parcelamento':'💳','Marketing':'📣','Tecnologia':'💻',
+    'Escritório':'🏢','Pessoal':'👤','Outros':'📌'
+  };
+  return icons[cat] || '📌';
+}
+
+// Verificar e atualizar status de contas vencidas
+function atualizarStatusVencidas(d) {
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  let alterado = false;
+  d.contas.forEach(c => {
+    if (c.status === 'A VENCER' || c.status === 'PENDENTE') {
+      const venc = parseLocalDate(c.vencimento);
+      if (venc && venc < hoje) {
+        c.status = 'VENCIDO';
+        alterado = true;
+      }
+    }
+  });
+  if (alterado) saveContas(d);
+  return d;
+}
+
+function gerarRecorrentesDoMes(d, mes, ano) {
+  let alterado = false;
+
+  // Deduplicar contas geradas automaticamente
+  const vistas = new Set();
+  d.contas = d.contas.filter(c => {
+    if (!c.recorrente && !c.parcelado && c.geradoAutomaticamente && c.templateId && c.vencimento) {
+      const chave = `${c.templateId}-${parseLocalDate(c.vencimento).getFullYear()}-${parseLocalDate(c.vencimento).getMonth()+1}`;
+      if (vistas.has(chave)) return false;
+      vistas.add(chave);
+    }
+    return true;
+  });
+
+  // Templates = recorrentes + parcelados
+  const allTemplates = d.contas.filter(c => c.recorrente || c.parcelado);
+
+  allTemplates.forEach(template => {
+    const mesIni = template.mesInicio || 1;
+    const anoIni = template.anoInicio || 2026;
+    const dataMes = new Date(ano, mes - 1, 1);
+    const dataIni = new Date(anoIni, mesIni - 1, 1);
+
+    // Não gerar antes do mês de início
+    if (dataMes < dataIni) return;
+
+    // Para parcelados: verificar se ainda está dentro do número de parcelas
+    if (template.parcelado && template.numParcelas) {
+      const diffMeses = (ano - anoIni)*12 + (mes - mesIni);
+      if (diffMeses >= template.numParcelas) return; // já terminou
+      const numParcela = diffMeses + 1;
+      const jaExiste = d.contas.some(c =>
+        !c.recorrente && !c.parcelado && c.geradoAutomaticamente &&
+        c.templateId === template.id &&
+        parseLocalDate(c.vencimento).getMonth()+1 === mes &&
+        parseLocalDate(c.vencimento).getFullYear() === ano
+      );
+      if (!jaExiste) {
+        const dia = template.diaVenc ? Math.min(template.diaVenc, new Date(ano,mes,0).getDate()) : 10;
+        d.contas.push({
+          id: uid(), templateId: template.id,
+          descricao: `${template.descricao} (${numParcela}/${template.numParcelas})`,
+          categoria: template.categoria, valor: template.valor,
+          vencimento: `${ano}-${String(mes).padStart(2,'0')}-${String(dia).padStart(2,'0')}`,
+          forma: template.forma, status: 'A VENCER', obs: template.obs||'',
+          recorrente: false, parcelado: false, geradoAutomaticamente: true,
+        });
+        alterado = true;
+      }
+      return;
+    }
+
+    // Para recorrentes: gerar normalmente
+    if (template.recorrente && template.diaVenc) {
+      const jaExiste = d.contas.some(c =>
+        !c.recorrente && !c.parcelado && c.geradoAutomaticamente &&
+        c.templateId === template.id &&
+        parseLocalDate(c.vencimento).getMonth()+1 === mes &&
+        parseLocalDate(c.vencimento).getFullYear() === ano
+      );
+      if (!jaExiste) {
+        const dia = Math.min(template.diaVenc, new Date(ano, mes, 0).getDate());
+        d.contas.push({
+          id: uid(), templateId: template.id,
+          descricao: template.descricao,
+          categoria: template.categoria, valor: template.valor,
+          vencimento: `${ano}-${String(mes).padStart(2,'0')}-${String(dia).padStart(2,'0')}`,
+          forma: template.forma, status: 'A VENCER', obs: template.obs||'',
+          recorrente: false, parcelado: false, geradoAutomaticamente: true,
+        });
+        alterado = true;
+      }
+    }
+  });
+
+  if (alterado) saveContas(d);
+  return d;
+}
+
+
+function renderContasDashboard(filtroAtivo) {
+  let d = getContas();
+  const mes = parseInt(document.getElementById('contas-mes').value);
+  const ano = 2026;
+  d = gerarRecorrentesDoMes(d, mes, ano);
+  d = atualizarStatusVencidas(d);
+
+  if (!filtroAtivo) filtroAtivo = window._contasFiltro || 'geral';
+  window._contasFiltro = filtroAtivo;
+
+  document.getElementById('contas-dash-periodo').textContent = `${MESES_CONTAS[mes]}/${ano}`;
+
+  // Contas do mês selecionado
+  const contasMes = d.contas.filter(c => {
+    if (c.recorrente || c.parcelado) return false;
+    if (!c.vencimento) return false;
+    const dt = parseLocalDate(c.vencimento);
+    return dt.getMonth()+1 === mes && dt.getFullYear() === ano;
+  });
+
+  // Vencidas = status VENCIDO com vencimento <= último dia do mês selecionado
+  const ultimoDiaMes = new Date(ano, mes, 0); // último dia do mês selecionado
+  const vencidas = d.contas.filter(c => {
+    if (c.recorrente || c.parcelado) return false;
+    if (c.status !== 'VENCIDO') return false;
+    if (!c.vencimento) return false;
+    return parseLocalDate(c.vencimento) <= ultimoDiaMes;
+  });
+
+  const pagas      = contasMes.filter(c => c.status === 'PAGO');
+  const totalMes   = contasMes.reduce((s,c) => s+Number(c.valor||0), 0);
+  const totalVenc  = vencidas.reduce((s,c) => s+Number(c.valor||0), 0);
+  const totalPago  = pagas.reduce((s,c) => s+Number(c.valor||0), 0);
+  // Total Geral: contas do mês que NÃO são vencidas + todas as vencidas (sem duplicar)
+  const contasMesSemVenc = contasMes.filter(c => c.status !== 'VENCIDO');
+  const totalGeral = contasMesSemVenc.reduce((s,c) => s+Number(c.valor||0), 0) + totalVenc;
+
+  let listaFiltrada, tituloLista;
+  if (filtroAtivo === 'geral') {
+    const ids = new Set();
+    listaFiltrada = [...contasMesSemVenc, ...vencidas].filter(c => {
+      if (ids.has(c.id)) return false;
+      ids.add(c.id); return true;
+    }).sort((a,b) => parseLocalDate(a.vencimento) - parseLocalDate(b.vencimento));
+    tituloLista = 'Total Geral';
+  } else if (filtroAtivo === 'mes') {
+    listaFiltrada = [...contasMes].sort((a,b) => parseLocalDate(a.vencimento) - parseLocalDate(b.vencimento));
+    tituloLista = `Contas de ${MESES_CONTAS[mes]}/${ano}`;
+  } else if (filtroAtivo === 'vencido') {
+    listaFiltrada = [...vencidas].sort((a,b) => parseLocalDate(a.vencimento) - parseLocalDate(b.vencimento));
+    tituloLista = 'Contas Vencidas';
+  } else {
+    listaFiltrada = [...pagas].sort((a,b) => parseLocalDate(a.vencimento) - parseLocalDate(b.vencimento));
+    tituloLista = `Pagas em ${MESES_CONTAS[mes]}/${ano}`;
+  }
+
+  const ativo = f => filtroAtivo === f;
+
+  document.getElementById('contas-dash-cards').innerHTML = '';
+  document.getElementById('contas-dash-lista-wrap').innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
+      <div onclick="renderContasDashboard('geral')" style="background:var(--bg2);border:1px solid ${ativo('geral')?'var(--gold)':'var(--border)'};border-radius:var(--radius);padding:18px 20px;cursor:pointer;${ativo('geral')?'background:var(--gold-bg);':''}">
+        <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">Total Geral</div>
+        <div style="font-size:24px;font-weight:700;color:${ativo('geral')?'var(--gold2)':'var(--text)'};font-family:'Inter',sans-serif;letter-spacing:-0.02em;">${fmtMoeda(totalGeral)}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px;">Mês + vencidos</div>
+      </div>
+      <div onclick="renderContasDashboard('mes')" style="background:var(--bg2);border:1px solid ${ativo('mes')?'rgba(96,165,250,0.5)':'var(--border)'};border-radius:var(--radius);padding:18px 20px;cursor:pointer;${ativo('mes')?'background:rgba(96,165,250,0.08);':''}">
+        <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">Do Mês</div>
+        <div style="font-size:24px;font-weight:700;color:var(--blue);font-family:'Inter',sans-serif;letter-spacing:-0.02em;">${fmtMoeda(totalMes)}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px;">${MESES_CONTAS[mes]}/${ano}</div>
+      </div>
+      <div onclick="renderContasDashboard('vencido')" style="background:var(--bg2);border:1px solid ${ativo('vencido')?'rgba(248,113,113,0.5)':'var(--border)'};border-radius:var(--radius);padding:18px 20px;cursor:pointer;${ativo('vencido')?'background:rgba(248,113,113,0.08);':''}">
+        <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">⚠ Vencido</div>
+        <div style="font-size:24px;font-weight:700;color:var(--red);font-family:'Inter',sans-serif;letter-spacing:-0.02em;">${fmtMoeda(totalVenc)}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px;">${vencidas.length} conta${vencidas.length!==1?'s':''} anteriores</div>
+      </div>
+      <div onclick="renderContasDashboard('pago')" style="background:var(--bg2);border:1px solid ${ativo('pago')?'rgba(45,212,160,0.5)':'var(--border)'};border-radius:var(--radius);padding:18px 20px;cursor:pointer;${ativo('pago')?'background:rgba(45,212,160,0.08);':''}">
+        <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">Pago</div>
+        <div style="font-size:24px;font-weight:700;color:var(--teal);font-family:'Inter',sans-serif;letter-spacing:-0.02em;">${fmtMoeda(totalPago)}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px;">${pagas.length} conta${pagas.length!==1?'s':''}</div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <div class="table-header">
+        <div class="table-title">${tituloLista}</div>
+        <button class="btn btn-gold btn-sm" onclick="abrirNovaConta()">+ Nova Conta</button>
+      </div>
+      ${listaFiltrada.length === 0
+        ? `<div style="padding:32px;text-align:center;color:var(--text3);font-size:13px;">Nenhuma conta encontrada</div>`
+        : `<table><thead><tr>
+            <th>Descrição</th><th>Categoria</th><th>Vencimento</th>
+            <th>Valor</th><th>Status</th><th>Ações</th>
+          </tr></thead>
+          <tbody>${listaFiltrada.map(c=>`<tr>
+            <td style="color:var(--text);font-weight:500">${catIcon(c.categoria)} ${c.descricao}</td>
+            <td class="muted">${c.categoria}</td>
+            <td class="${c.status==='VENCIDO'?'red':'muted'}">${fmtDate(c.vencimento)}</td>
+            <td class="gold">${c.valor?fmtMoeda(c.valor):'—'}</td>
+            <td><select class="status-select ${(c.status||'').toLowerCase().replace(' ','-')}"
+              onchange="alterarStatusConta('${c.id}',this.value,this);renderContasDashboard('${filtroAtivo}')">
+              <option value="A VENCER" ${c.status==='A VENCER'?'selected':''}>A VENCER</option>
+              <option value="PAGO" ${c.status==='PAGO'?'selected':''}>PAGO</option>
+              <option value="VENCIDO" ${c.status==='VENCIDO'?'selected':''}>VENCIDO</option>
+            </select></td>
+            <td><div class="row-actions">
+              <button class="btn btn-ghost btn-sm" onclick="editarConta('${c.id}')">Editar</button>
+              <button class="btn btn-danger btn-sm" onclick="excluirConta('${c.id}');renderContasDashboard('${filtroAtivo}')">✕</button>
+            </div></td>
+          </tr>`).join('')}</tbody></table>`
+      }
+    </div>
+  `;
+}
+
+
+function filtrarContas(f, btn) {
+  filtroContaAtivo = f;
+  document.querySelectorAll('#modulo-contas .filter-btn').forEach(b=>b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderContasLista();
+}
+
+function renderContasLista() {
+  let d = getContas();
+  d = atualizarStatusVencidas(d);
+  const el = document.getElementById('contas-lista-wrap');
+
+  // APENAS templates (recorrentes e parcelados)
+  const templates = d.contas.filter(c => c.recorrente || c.parcelado);
+
+  // APENAS contas avulsas cadastradas manualmente (nunca as geradas automaticamente)
+  const avulsas = d.contas
+    .filter(c => !c.recorrente && !c.parcelado && !c.geradoAutomaticamente)
+    .sort((a,b) => {
+      if (!a.vencimento) return 1;
+      if (!b.vencimento) return -1;
+      return parseLocalDate(a.vencimento) - parseLocalDate(b.vencimento);
+    });
+
+  let html = '';
+
+  // ── Templates ────────────────────────────────────────────────────
+  html += `<div style="margin-bottom:24px;">
+    <div style="font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">🔄 Recorrentes e Parceladas</div>`;
+
+  if (templates.length === 0) {
+    html += `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center;color:var(--text3);font-size:13px;">
+      Nenhuma conta recorrente ou parcelada cadastrada
+    </div>`;
+  } else {
+    html += `<div class="table-wrap"><table>
+      <thead><tr>
+        <th>Descrição</th><th>Categoria</th><th>Tipo</th><th>Dia Venc.</th>
+        <th>Valor</th><th>Forma</th><th>A partir de</th><th>Ações</th>
+      </tr></thead>
+      <tbody>${templates.map(c => `<tr>
+        <td style="color:var(--text);font-weight:500">${catIcon(c.categoria)} ${c.descricao}</td>
+        <td class="muted">${c.categoria}</td>
+        <td><span class="badge ${c.parcelado?'badge-indicacao':'badge-ativo'}" style="font-size:10px;">
+          ${c.parcelado?`💳 ${c.numParcelas}x`:'🔄 Mensal'}
+        </span></td>
+        <td class="muted">${c.diaVenc ? `Todo dia ${c.diaVenc}` : '—'}</td>
+        <td class="gold">${c.valor ? fmtMoeda(c.valor) : '<span class="muted">Variável</span>'}</td>
+        <td class="muted">${c.forma||'—'}</td>
+        <td class="muted">${c.anoInicio ? `${MESES_CONTAS[c.mesInicio]}/${c.anoInicio}` : '—'}</td>
+        <td><div class="row-actions">
+          <button class="btn btn-ghost btn-sm" onclick="editarConta('${c.id}')">Editar</button>
+          <button class="btn btn-danger btn-sm" onclick="excluirConta('${c.id}')">✕</button>
+        </div></td>
+      </tr>`).join('')}</tbody>
+    </table></div>`;
+  }
+  html += '</div>';
+
+  // ── Avulsas ───────────────────────────────────────────────────────
+  html += `<div>
+    <div style="font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">📋 Contas Avulsas</div>`;
+
+  if (avulsas.length === 0) {
+    html += `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center;color:var(--text3);font-size:13px;">
+      Nenhuma conta avulsa cadastrada
+    </div>`;
+  } else {
+    html += `<div class="table-wrap"><table>
+      <thead><tr>
+        <th>Descrição</th><th>Categoria</th><th>Vencimento</th>
+        <th>Valor</th><th>Forma</th><th>Status</th><th>Ações</th>
+      </tr></thead>
+      <tbody>${avulsas.map(c => `<tr>
+        <td style="color:var(--text);font-weight:500">${catIcon(c.categoria)} ${c.descricao}</td>
+        <td class="muted">${c.categoria}</td>
+        <td class="${c.status==='VENCIDO'?'red':'muted'}">${c.vencimento ? fmtDate(c.vencimento) : '<span style="color:var(--amber);font-size:11px;">⚠ sem data</span>'}</td>
+        <td class="gold">${fmtMoeda(c.valor)}</td>
+        <td class="muted">${c.forma||'—'}</td>
+        <td><select class="status-select ${(c.status||'').toLowerCase().replace(' ','-')}"
+          onchange="alterarStatusConta('${c.id}',this.value,this)">
+          <option value="A VENCER" ${c.status==='A VENCER'?'selected':''}>A VENCER</option>
+          <option value="PAGO" ${c.status==='PAGO'?'selected':''}>PAGO</option>
+          <option value="VENCIDO" ${c.status==='VENCIDO'?'selected':''}>VENCIDO</option>
+        </select></td>
+        <td><div class="row-actions">
+          <button class="btn btn-ghost btn-sm" onclick="editarConta('${c.id}')">Editar</button>
+          <button class="btn btn-danger btn-sm" onclick="excluirConta('${c.id}')">✕</button>
+        </div></td>
+      </tr>`).join('')}</tbody>
+    </table></div>`;
+  }
+  html += '</div>';
+
+  el.innerHTML = html;
+}
+
+
+function toggleRecorrente() {
+  const val = document.getElementById('conta-recorrente').value;
+  const isRec  = val === 'sim';
+  const isPar  = val === 'parcelado';
+  const isAvul = val === 'nao';
+
+  document.getElementById('campo-mes-inicio').style.display = (isRec||isPar) ? 'grid' : 'none';
+  document.getElementById('campo-parcelas').style.display   = isPar ? 'grid' : 'none';
+  document.getElementById('campo-dia-venc').style.display   = (isRec||isPar) ? 'flex' : 'none';
+
+  // Campo vencimento SEMPRE visível — muda o label conforme o tipo
+  const rowVenc = document.getElementById('conta-venc').closest('.form-group').parentElement;
+  rowVenc.style.display = 'grid';
+  const labelVenc = rowVenc.querySelector('label');
+  if (labelVenc) labelVenc.textContent = (isRec||isPar) ? 'Data da 1ª Parcela' : 'Vencimento *';
+}
+
+function atualizarTerminoParcela() {
+  const mes = parseInt(document.getElementById('conta-mes-inicio').value);
+  const ano = parseInt(document.getElementById('conta-ano-inicio').value);
+  const num = parseInt(document.getElementById('conta-num-parcelas').value);
+  if (!mes||!ano||!num) return;
+  // Calcular mês de término
+  const totalMeses = mes - 1 + (num - 1);
+  const mesTermino = (totalMeses % 12) + 1;
+  const anoTermino = ano + Math.floor(totalMeses / 12);
+  const MESES = ['','Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  document.getElementById('conta-termino-preview').textContent =
+    `${num}x → termina em ${MESES[mesTermino]}/${anoTermino}`;
+}
+
+function abrirNovaConta() {
+  document.getElementById('conta-id-edit').value = '';
+  document.getElementById('modal-conta-title').textContent = 'Nova Conta';
+  ['conta-desc','conta-valor','conta-obs','conta-data-pag'].forEach(id=>{ document.getElementById(id).value=''; });
+  document.getElementById('conta-cat').value = 'Contabilidade';
+  document.getElementById('conta-forma').value = 'Pix';
+  document.getElementById('conta-status').value = 'PENDENTE';
+  document.getElementById('conta-recorrente').value = 'nao';
+  document.getElementById('conta-dia-venc').value = '';
+  // Pré-selecionar mês atual no seletor de início
+  const mes = parseInt(document.getElementById('contas-mes')?.value || new Date().getMonth()+1);
+  document.getElementById('conta-mes-inicio').value = mes;
+  document.getElementById('conta-ano-inicio').value = '2026';
+  document.getElementById('conta-venc').value = '';
+  // Mostrar/ocultar campos corretos
+  document.getElementById('campo-mes-inicio').style.display = 'none';
+  document.getElementById('campo-parcelas').style.display = 'none';
+  document.getElementById('campo-dia-venc').style.display = 'flex';
+  document.getElementById('conta-num-parcelas').value = '';
+  document.getElementById('conta-termino-preview').textContent = 'Preencha os campos acima';
+  document.getElementById('modal-conta').classList.add('open');
+}
+
+function salvarConta() {
+  const desc   = document.getElementById('conta-desc').value.trim();
+  const valor  = document.getElementById('conta-valor').value;
+  const venc   = document.getElementById('conta-venc').value;
+  const isRec  = document.getElementById('conta-recorrente').value === 'sim';
+  const isPar2 = document.getElementById('conta-recorrente').value === 'parcelado';
+  const status = document.getElementById('conta-status').value;
+  const vencObrig = !isRec && !isPar2 && !venc;
+  if (!desc || !valor) { showToast('Preencha descrição e valor'); return; }
+  if (!isRec && !isPar2 && !venc) { showToast('Preencha a data de vencimento'); return; }
+  if (isPar2 && !document.getElementById('conta-num-parcelas').value) { showToast('Informe o número de parcelas'); return; }
+
+  const d  = getContas();
+  const id = document.getElementById('conta-id-edit').value;
+  const tipoRec = document.getElementById('conta-recorrente').value;
+  const isPar   = tipoRec === 'parcelado';
+  const conta = {
+    id: id||uid(),
+    descricao: desc,
+    categoria: document.getElementById('conta-cat').value,
+    valor: valor ? Number(valor) : null,
+    vencimento: venc || null,
+    forma: document.getElementById('conta-forma').value,
+    status: (isRec||isPar) ? 'A VENCER' : document.getElementById('conta-status').value,
+    dataPagamento: document.getElementById('conta-data-pag').value,
+    obs: document.getElementById('conta-obs').value,
+    recorrente: isRec,
+    parcelado: isPar,
+    diaVenc: (isRec||isPar) ? Number(document.getElementById('conta-dia-venc').value)||null : null,
+    mesInicio: (isRec||isPar) ? Number(document.getElementById('conta-mes-inicio').value) : null,
+    anoInicio: (isRec||isPar) ? Number(document.getElementById('conta-ano-inicio').value) : null,
+    numParcelas: isPar ? Number(document.getElementById('conta-num-parcelas').value)||null : null,
+  };
+
+  if (id) {
+    const idx = d.contas.findIndex(c=>c.id===id);
+    if (idx>=0) d.contas[idx]=conta;
+  } else { d.contas.push(conta); }
+
+  saveContas(d);
+  fecharModal('modal-conta');
+  renderContasDashboard();
+  if (document.getElementById('view-contas-lista').classList.contains('active')) renderContasLista();
+  showToast(id?'Conta atualizada!':'Conta cadastrada!');
+}
+
+function editarConta(id) {
+  const d = getContas();
+  const c = d.contas.find(x=>x.id===id);
+  if (!c) return;
+  document.getElementById('conta-id-edit').value = id;
+  document.getElementById('modal-conta-title').textContent = 'Editar Conta';
+  document.getElementById('conta-desc').value = c.descricao||'';
+  document.getElementById('conta-cat').value = c.categoria||'Outros';
+  document.getElementById('conta-valor').value = c.valor||'';
+  document.getElementById('conta-venc').value = c.vencimento||'';
+  document.getElementById('conta-forma').value = c.forma||'Pix';
+  document.getElementById('conta-status').value = c.status||'PENDENTE';
+  document.getElementById('conta-data-pag').value = c.dataPagamento||'';
+  document.getElementById('conta-obs').value = c.obs||'';
+  const tipoVal = c.parcelado ? 'parcelado' : (c.recorrente ? 'sim' : 'nao');
+  document.getElementById('conta-recorrente').value = tipoVal;
+  document.getElementById('conta-dia-venc').value = c.diaVenc||'';
+  document.getElementById('conta-mes-inicio').value = c.mesInicio||new Date().getMonth()+1;
+  document.getElementById('conta-ano-inicio').value = c.anoInicio||2026;
+  document.getElementById('conta-num-parcelas').value = c.numParcelas||'';
+  document.getElementById('campo-mes-inicio').style.display = (c.recorrente||c.parcelado) ? 'grid' : 'none';
+  document.getElementById('campo-parcelas').style.display = c.parcelado ? 'grid' : 'none';
+  document.getElementById('campo-dia-venc').style.display = c.recorrente ? 'flex' : 'none';
+  if (c.parcelado) atualizarTerminoParcela();
+  document.getElementById('modal-conta').classList.add('open');
+}
+
+function excluirConta(id) {
+  if (!confirm('Confirma exclusão desta conta?')) return;
+  const d = getContas();
+  d.contas = d.contas.filter(c=>c.id!==id);
+  saveContas(d);
+  renderContasDashboard();
+  renderContasLista();
+  showToast('Conta excluída');
+}
+
+function alterarStatusConta(id, novoStatus, selectEl) {
+  const d = getContas();
+  const idx = d.contas.findIndex(c=>c.id===id);
+  if (idx<0) return;
+  d.contas[idx].status = novoStatus;
+  if (novoStatus === 'PAGO' && !d.contas[idx].dataPagamento) {
+    d.contas[idx].dataPagamento = new Date().toISOString().split('T')[0];
+  }
+  saveContas(d);
+  selectEl.className = 'status-select ' + novoStatus.toLowerCase();
+  showToast('Status atualizado: ' + novoStatus);
+  renderContasDashboard();
+}
+
+// ── RECORRENTES ───────────────────────────────────────────────────────────────
+function renderRecorrentes() {
+  const d = getContas();
+  const el = document.getElementById('recorrentes-lista');
+  if (d.recorrentes.length === 0) {
+    el.innerHTML = `<div class="empty"><div class="empty-icon">🔄</div>
+      <div class="empty-msg">Nenhuma conta recorrente cadastrada<br>
+      <button class="btn btn-gold" style="margin-top:12px;" onclick="abrirNovaRecorrente()">+ Cadastrar Recorrente</button></div></div>`;
+    return;
+  }
+
+  el.innerHTML = `<div class="table-wrap"><table>
+    <thead><tr>
+      <th>Descrição</th><th>Categoria</th><th>Dia Venc.</th>
+      <th>Valor</th><th>Tipo</th><th>Status</th><th>Ações</th>
+    </tr></thead>
+    <tbody>${d.recorrentes.map(r=>`
+      <tr>
+        <td style="color:var(--text);font-weight:500">${catIcon(r.categoria)} ${r.descricao}</td>
+        <td class="muted">${r.categoria}</td>
+        <td class="muted">Todo dia ${r.dia}</td>
+        <td class="gold">${r.valor?fmtMoeda(r.valor):'<span class="muted">Variável</span>'}</td>
+        <td><span class="badge ${r.tipo==='fixo'?'badge-ativo':'badge-avencer'}">${r.tipo==='fixo'?'Fixo':'Variável'}</span></td>
+        <td><span class="badge ${r.status==='ATIVO'?'badge-ativo':'badge-inativo'}">${r.status}</span></td>
+        <td><div class="row-actions">
+          <button class="btn btn-gold btn-sm" onclick="gerarContaRecorrente('${r.id}')">Gerar</button>
+          <button class="btn btn-ghost btn-sm" onclick="editarRecorrente('${r.id}')">Editar</button>
+          <button class="btn btn-danger btn-sm" onclick="excluirRecorrente('${r.id}')">✕</button>
+        </div></td>
+      </tr>
+    `).join('')}</tbody>
+  </table></div>
+  <div style="margin-top:12px;padding:12px 16px;background:var(--gold-bg);border:1px solid var(--border2);border-radius:var(--radius);font-size:12px;color:var(--text3);">
+    💡 Clique em <strong style="color:var(--gold2)">Gerar</strong> para criar a conta do mês atual a partir da recorrente. Contas variáveis (DAS) permitem informar o valor na hora.
+  </div>`;
+}
+
+function abrirNovaRecorrente() {
+  document.getElementById('rec-id-edit').value='';
+  document.getElementById('modal-rec-title').textContent='Nova Conta Recorrente';
+  ['rec-desc','rec-valor','rec-obs'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('rec-cat').value='Contabilidade';
+  document.getElementById('rec-dia').value='10';
+  document.getElementById('rec-forma').value='Pix';
+  document.getElementById('rec-tipo').value='fixo';
+  document.getElementById('rec-status').value='ATIVO';
+  document.getElementById('modal-recorrente').classList.add('open');
+}
+
+function salvarRecorrente() {
+  const desc = document.getElementById('rec-desc').value.trim();
+  const dia  = document.getElementById('rec-dia').value;
+  if (!desc||!dia) { showToast('Preencha descrição e dia de vencimento'); return; }
+
+  const d  = getContas();
+  const id = document.getElementById('rec-id-edit').value;
+  const rec = {
+    id: id||uid(),
+    descricao: desc,
+    categoria: document.getElementById('rec-cat').value,
+    valor: document.getElementById('rec-valor').value ? Number(document.getElementById('rec-valor').value) : null,
+    dia: Number(dia),
+    forma: document.getElementById('rec-forma').value,
+    tipo: document.getElementById('rec-tipo').value,
+    status: document.getElementById('rec-status').value,
+    obs: document.getElementById('rec-obs').value,
+  };
+
+  if (id) {
+    const idx = d.recorrentes.findIndex(r=>r.id===id);
+    if (idx>=0) d.recorrentes[idx]=rec;
+  } else { d.recorrentes.push(rec); }
+
+  saveContas(d);
+  fecharModal('modal-recorrente');
+  renderRecorrentes();
+  showToast(id?'Recorrente atualizada!':'Recorrente cadastrada!');
+}
+
+function editarRecorrente(id) {
+  const d = getContas();
+  const r = d.recorrentes.find(x=>x.id===id);
+  if (!r) return;
+  document.getElementById('rec-id-edit').value=id;
+  document.getElementById('modal-rec-title').textContent='Editar Recorrente';
+  document.getElementById('rec-desc').value=r.descricao||'';
+  document.getElementById('rec-cat').value=r.categoria||'Outros';
+  document.getElementById('rec-valor').value=r.valor||'';
+  document.getElementById('rec-dia').value=r.dia||'10';
+  document.getElementById('rec-forma').value=r.forma||'Pix';
+  document.getElementById('rec-tipo').value=r.tipo||'fixo';
+  document.getElementById('rec-status').value=r.status||'ATIVO';
+  document.getElementById('rec-obs').value=r.obs||'';
+  document.getElementById('modal-recorrente').classList.add('open');
+}
+
+function excluirRecorrente(id) {
+  if (!confirm('Confirma exclusão?')) return;
+  const d = getContas();
+  d.recorrentes = d.recorrentes.filter(r=>r.id!==id);
+  saveContas(d);
+  renderRecorrentes();
+  showToast('Recorrente excluída');
+}
+
+function gerarContaRecorrente(id) {
+  const d   = getContas();
+  const rec = d.recorrentes.find(r=>r.id===id);
+  if (!rec) return;
+
+  const hoje = new Date();
+  const mes  = hoje.getMonth()+1;
+  const ano  = hoje.getFullYear();
+
+  // Verificar se já existe conta deste mês
+  const jaExiste = d.contas.find(c =>
+    c.recorrenteId === id &&
+    parseLocalDate(c.vencimento).getMonth()+1 === mes &&
+    parseLocalDate(c.vencimento).getFullYear() === ano
+  );
+  if (jaExiste) { showToast('Conta já gerada para este mês!'); return; }
+
+  let valor = rec.valor;
+  if (rec.tipo === 'variavel' || !valor) {
+    const input = prompt(`Informe o valor de ${rec.descricao} para ${MESES_CONTAS[mes]}/${ano}:`);
+    if (!input) return;
+    valor = Number(input.replace(',','.'));
+  }
+
+  const vencimento = `${ano}-${String(mes).padStart(2,'0')}-${String(rec.dia).padStart(2,'0')}`;
+  const novaConta = {
+    id: uid(),
+    recorrenteId: id,
+    descricao: `${rec.descricao} — ${MESES_CONTAS[mes]}/${ano}`,
+    categoria: rec.categoria,
+    valor,
+    vencimento,
+    forma: rec.forma,
+    status: 'A VENCER',
+    obs: rec.obs||'',
+  };
+
+  d.contas.push(novaConta);
+  saveContas(d);
+  renderRecorrentes();
+  showToast(`Conta gerada: ${fmtMoeda(valor)} — venc. ${fmtDate(vencimento)}`);
+}
+
+// Seed recorrentes iniciais da Integrus
+
+function resetarContas() {
+  if (!confirm('Isso vai apagar TODAS as contas cadastradas e começar do zero. Confirma?')) return;
+  localStorage.removeItem(CONTAS_KEY);
+  initContasSeed();
+  renderContasDashboard();
+  showToast('Dados de contas resetados!');
+}
+
+function initContasSeed() {
+  const existing = localStorage.getItem(CONTAS_KEY);
+  if (existing) return;
+  const seed = {
+    contas: [
+      { id:'rec001', descricao:'Mensalidade Contador', categoria:'Contabilidade', valor:null, diaVenc:10, forma:'Pix', status:'PENDENTE', obs:'Contador da Integrus', recorrente:true, mesInicio:1, anoInicio:2026 },
+      { id:'rec002', descricao:'DAS — Simples Nacional', categoria:'Impostos', valor:null, diaVenc:20, forma:'Boleto', status:'PENDENTE', obs:'Varia conforme faturamento do mês', recorrente:true, mesInicio:1, anoInicio:2026 },
+      { id:'rec003', descricao:'Locação do Carro', categoria:'Veículo', valor:null, diaVenc:10, forma:'Débito Automático', status:'PENDENTE', obs:'', recorrente:true, mesInicio:1, anoInicio:2026 },
+      { id:'rec004', descricao:'Parcelamento MEI', categoria:'Parcelamento', valor:null, diaVenc:15, forma:'Boleto', status:'PENDENTE', obs:'Parcelamento débitos MEI', recorrente:true, mesInicio:1, anoInicio:2026 },
+    ]
+  };
+  saveContas(seed);
+}
+
+// ══════════════════════════════════════════════════════════════════
+// MÓDULO PESSOAL
+// ══════════════════════════════════════════════════════════════════
+const PESSOAL_KEY = 'integrus_pessoal_v1';
+
+function getPessoal() {
+  try { const r = localStorage.getItem(PESSOAL_KEY); if (r) return JSON.parse(r); } catch(e){}
+  return { contas: [] };
+}
+function savePessoal(d) {
+  try { localStorage.setItem(PESSOAL_KEY, JSON.stringify(d)); } catch(e){}
+}
+
+function showPessoalView(view, btn) {
+  document.querySelectorAll('#modulo-pessoal .view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('#modulo-pessoal .nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('view-'+view).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (view==='pessoal-dashboard') renderPessoalDashboard();
+  if (view==='pessoal-lista')     renderPessoalLista();
+}
+
+function togglePessoalRecorrente() {
+  const val   = document.getElementById('pessoal-recorrente').value;
+  const isRec = val === 'sim';
+  const isPar = val === 'parcelado';
+  document.getElementById('pessoal-campo-mes-inicio').style.display = (isRec||isPar) ? 'grid' : 'none';
+  document.getElementById('pessoal-campo-parcelas').style.display   = isPar ? 'grid' : 'none';
+  document.getElementById('pessoal-campo-dia').style.display        = (isRec||isPar) ? 'flex' : 'none';
+  // Campo vencimento SEMPRE visível — muda só o label
+  const rowVenc = document.getElementById('pessoal-venc').closest('.form-group').parentElement;
+  rowVenc.style.display = 'grid';
+  const labelVenc = rowVenc.querySelector('label');
+  if (labelVenc) labelVenc.textContent = (isRec||isPar) ? 'Data da 1ª Parcela' : 'Vencimento *';
+}
+
+function atualizarTerminoPessoal() {
+  const mes = parseInt(document.getElementById('pessoal-mes-inicio').value);
+  const ano = parseInt(document.getElementById('pessoal-ano-inicio').value);
+  const num = parseInt(document.getElementById('pessoal-num-parcelas').value);
+  if (!mes||!ano||!num) return;
+  const totalMeses = mes - 1 + (num - 1);
+  const mesTermino = (totalMeses % 12) + 1;
+  const anoTermino = ano + Math.floor(totalMeses / 12);
+  const MESES = ['','Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  document.getElementById('pessoal-termino-preview').textContent =
+    `${num}x → termina em ${MESES[mesTermino]}/${anoTermino}`;
+}
+
+function atualizarPessoalVencidas(d) {
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  let alt = false;
+  d.contas.forEach(c => {
+    if ((c.status==='A VENCER'||c.status==='PENDENTE') && c.vencimento) {
+      if (parseLocalDate(c.vencimento) < hoje) { c.status='VENCIDO'; alt=true; }
+    }
+  });
+  if (alt) savePessoal(d);
+  return d;
+}
+
+function gerarPessoalRecorrentes(d, mes, ano) {
+  let alt = false;
+  const vistas = new Set();
+  d.contas = d.contas.filter(c => {
+    if (!c.recorrente && !c.parcelado && c.geradoAuto && c.templateId && c.vencimento) {
+      const chave = `${c.templateId}-${parseLocalDate(c.vencimento).getFullYear()}-${parseLocalDate(c.vencimento).getMonth()+1}`;
+      if (vistas.has(chave)) return false;
+      vistas.add(chave);
+    }
+    return true;
+  });
+
+  const allTemplates = d.contas.filter(c => c.recorrente || c.parcelado);
+
+  allTemplates.forEach(t => {
+    const mesIni = t.mesInicio||1, anoIni = t.anoInicio||2026;
+    const dataMes = new Date(ano,mes-1,1);
+    const dataIni = new Date(anoIni,mesIni-1,1);
+    if (dataMes < dataIni) return;
+
+    // Parcelado
+    if (t.parcelado && t.numParcelas) {
+      const diff = (ano-anoIni)*12+(mes-mesIni);
+      if (diff >= t.numParcelas) return;
+      const numParcela = diff + 1;
+      const jaExiste = d.contas.some(c=>!c.recorrente&&!c.parcelado&&c.geradoAuto&&
+        c.templateId===t.id&&parseLocalDate(c.vencimento).getMonth()+1===mes&&
+        parseLocalDate(c.vencimento).getFullYear()===ano);
+      if (!jaExiste) {
+        const dia = t.diaVenc ? Math.min(t.diaVenc,new Date(ano,mes,0).getDate()) : 10;
+        d.contas.push({
+          id:uid(), templateId:t.id,
+          descricao:`${t.descricao} (${numParcela}/${t.numParcelas})`,
+          categoria:t.categoria, valor:t.valor,
+          vencimento:`${ano}-${String(mes).padStart(2,'0')}-${String(dia).padStart(2,'0')}`,
+          forma:t.forma, status:'A VENCER', obs:t.obs||'',
+          recorrente:false, parcelado:false, geradoAuto:true,
+        });
+        alt=true;
+      }
+      return;
+    }
+
+    // Recorrente
+    if (t.recorrente && t.diaVenc) {
+      const jaExiste = d.contas.some(c=>!c.recorrente&&!c.parcelado&&c.geradoAuto&&
+        c.templateId===t.id&&parseLocalDate(c.vencimento).getMonth()+1===mes&&
+        parseLocalDate(c.vencimento).getFullYear()===ano);
+      if (!jaExiste) {
+        const dia = Math.min(t.diaVenc,new Date(ano,mes,0).getDate());
+        d.contas.push({
+          id:uid(), templateId:t.id, descricao:t.descricao, categoria:t.categoria,
+          valor:t.valor,
+          vencimento:`${ano}-${String(mes).padStart(2,'0')}-${String(dia).padStart(2,'0')}`,
+          forma:t.forma, status:'A VENCER', obs:t.obs||'',
+          recorrente:false, parcelado:false, geradoAuto:true,
+        });
+        alt=true;
+      }
+    }
+  });
+
+  if (alt) savePessoal(d);
+  return d;
+}
+
+function renderPessoalDashboard(filtroAtivo) {
+  let d = getPessoal();
+  const mes = parseInt(document.getElementById('pessoal-mes').value);
+  const ano = 2026;
+  d = gerarPessoalRecorrentes(d, mes, ano);
+  d = atualizarPessoalVencidas(d);
+
+  if (!filtroAtivo) filtroAtivo = window._pessoalFiltro || 'geral';
+  window._pessoalFiltro = filtroAtivo;
+
+  document.getElementById('pessoal-dash-periodo').textContent = `${MESES_CONTAS[mes]}/${ano}`;
+
+  // Contas do mês selecionado
+  const contasMes = d.contas.filter(c => {
+    if (c.recorrente || c.parcelado) return false;
+    if (!c.vencimento) return false;
+    const dt = parseLocalDate(c.vencimento);
+    return dt.getMonth()+1 === mes && dt.getFullYear() === ano;
+  });
+
+  // Vencidas = status VENCIDO com vencimento <= último dia do mês selecionado
+  const ultimoDiaMes = new Date(ano, mes, 0);
+  const vencidas = d.contas.filter(c => {
+    if (c.recorrente || c.parcelado) return false;
+    if (c.status !== 'VENCIDO') return false;
+    if (!c.vencimento) return false;
+    return parseLocalDate(c.vencimento) <= ultimoDiaMes;
+  });
+
+  const pagas             = contasMes.filter(c => c.status === 'PAGO');
+  const contasMesSemVenc  = contasMes.filter(c => c.status !== 'VENCIDO');
+  const totalMes          = contasMes.reduce((s,c) => s+Number(c.valor||0), 0);
+  const totalVenc         = vencidas.reduce((s,c) => s+Number(c.valor||0), 0);
+  const totalPago         = pagas.reduce((s,c) => s+Number(c.valor||0), 0);
+  const totalGeral        = contasMesSemVenc.reduce((s,c) => s+Number(c.valor||0), 0) + totalVenc;
+
+  let listaFiltrada, tituloLista;
+  if (filtroAtivo === 'geral') {
+    const ids = new Set();
+    listaFiltrada = [...contasMesSemVenc, ...vencidas].filter(c => {
+      if (ids.has(c.id)) return false;
+      ids.add(c.id); return true;
+    }).sort((a,b) => parseLocalDate(a.vencimento) - parseLocalDate(b.vencimento));
+    tituloLista = 'Total Geral';
+  } else if (filtroAtivo === 'mes') {
+    listaFiltrada = [...contasMes].sort((a,b) => parseLocalDate(a.vencimento) - parseLocalDate(b.vencimento));
+    tituloLista = `Contas de ${MESES_CONTAS[mes]}/${ano}`;
+  } else if (filtroAtivo === 'vencido') {
+    listaFiltrada = [...vencidas].sort((a,b) => parseLocalDate(a.vencimento) - parseLocalDate(b.vencimento));
+    tituloLista = 'Contas Vencidas';
+  } else {
+    listaFiltrada = [...pagas].sort((a,b) => parseLocalDate(a.vencimento) - parseLocalDate(b.vencimento));
+    tituloLista = `Pagas em ${MESES_CONTAS[mes]}/${ano}`;
+  }
+
+  const ativo = f => filtroAtivo === f;
+
+  document.getElementById('pessoal-dash-cards').innerHTML = '';
+  document.getElementById('pessoal-dash-lista-wrap').innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
+
+      <div onclick="renderPessoalDashboard('geral')" style="background:var(--bg2);
+        border:1px solid ${ativo('geral')?'var(--gold)':'var(--border)'};
+        border-radius:var(--radius);padding:18px 20px;cursor:pointer;
+        ${ativo('geral')?'background:var(--gold-bg);':''}">
+        <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">Total Geral</div>
+        <div style="font-size:24px;font-weight:700;color:${ativo('geral')?'var(--gold2)':'var(--text)'};font-family:'Inter',sans-serif;letter-spacing:-0.02em;">${fmtMoeda(totalGeral)}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px;">Mês + vencidos</div>
+      </div>
+
+      <div onclick="renderPessoalDashboard('mes')" style="background:var(--bg2);
+        border:1px solid ${ativo('mes')?'rgba(96,165,250,0.5)':'var(--border)'};
+        border-radius:var(--radius);padding:18px 20px;cursor:pointer;
+        ${ativo('mes')?'background:rgba(96,165,250,0.08);':''}">
+        <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">Do Mês</div>
+        <div style="font-size:24px;font-weight:700;color:var(--blue);font-family:'Inter',sans-serif;letter-spacing:-0.02em;">${fmtMoeda(totalMes)}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px;">${MESES_CONTAS[mes]}/${ano}</div>
+      </div>
+
+      <div onclick="renderPessoalDashboard('vencido')" style="background:var(--bg2);
+        border:1px solid ${ativo('vencido')?'rgba(248,113,113,0.5)':'var(--border)'};
+        border-radius:var(--radius);padding:18px 20px;cursor:pointer;
+        ${ativo('vencido')?'background:rgba(248,113,113,0.08);':''}">
+        <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">⚠ Vencido</div>
+        <div style="font-size:24px;font-weight:700;color:var(--red);font-family:'Inter',sans-serif;letter-spacing:-0.02em;">${fmtMoeda(totalVenc)}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px;">${vencidas.length} conta${vencidas.length!==1?'s':''}</div>
+      </div>
+
+      <div onclick="renderPessoalDashboard('pago')" style="background:var(--bg2);
+        border:1px solid ${ativo('pago')?'rgba(45,212,160,0.5)':'var(--border)'};
+        border-radius:var(--radius);padding:18px 20px;cursor:pointer;
+        ${ativo('pago')?'background:rgba(45,212,160,0.08);':''}">
+        <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">Pago</div>
+        <div style="font-size:24px;font-weight:700;color:var(--teal);font-family:'Inter',sans-serif;letter-spacing:-0.02em;">${fmtMoeda(totalPago)}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px;">${pagas.length} conta${pagas.length!==1?'s':''}</div>
+      </div>
+
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-header">
+        <div class="table-title">${tituloLista}</div>
+        <button class="btn btn-gold btn-sm" onclick="abrirNovaPessoal()">+ Nova Conta</button>
+      </div>
+      ${listaFiltrada.length === 0
+        ? `<div style="padding:32px;text-align:center;color:var(--text3);font-size:13px;">Nenhuma conta encontrada</div>`
+        : `<table><thead><tr>
+            <th>Descrição</th><th>Categoria</th><th>Vencimento</th>
+            <th>Valor</th><th>Status</th><th>Ações</th>
+          </tr></thead>
+          <tbody>${listaFiltrada.map(c=>`<tr>
+            <td style="color:var(--text);font-weight:500">${catIcon(c.categoria)} ${c.descricao}</td>
+            <td class="muted">${c.categoria}</td>
+            <td class="${c.status==='VENCIDO'?'red':'muted'}">${fmtDate(c.vencimento)}</td>
+            <td class="gold">${fmtMoeda(c.valor)}</td>
+            <td><select class="status-select ${(c.status||'').toLowerCase().replace(' ','-')}"
+              onchange="alterarStatusPessoal('${c.id}',this.value,this);renderPessoalDashboard('${filtroAtivo}')">
+              <option value="A VENCER" ${c.status==='A VENCER'?'selected':''}>A VENCER</option>
+              <option value="PAGO" ${c.status==='PAGO'?'selected':''}>PAGO</option>
+              <option value="VENCIDO" ${c.status==='VENCIDO'?'selected':''}>VENCIDO</option>
+            </select></td>
+            <td><div class="row-actions">
+              <button class="btn btn-ghost btn-sm" onclick="editarPessoal('${c.id}')">Editar</button>
+              <button class="btn btn-danger btn-sm" onclick="excluirPessoal('${c.id}');renderPessoalDashboard('${filtroAtivo}')">✕</button>
+            </div></td>
+          </tr>`).join('')}</tbody></table>`
+      }
+    </div>
+  `;
+}
+
+
+function renderPessoalLista() {
+  let d = getPessoal();
+  d = atualizarPessoalVencidas(d);
+  const el = document.getElementById('pessoal-lista-wrap');
+
+  const templates = d.contas.filter(c => c.recorrente || c.parcelado);
+  const avulsas   = d.contas
+    .filter(c => !c.recorrente && !c.parcelado && !c.geradoAuto)
+    .sort((a,b) => {
+      if (!a.vencimento) return 1;
+      if (!b.vencimento) return -1;
+      return parseLocalDate(a.vencimento) - parseLocalDate(b.vencimento);
+    });
+
+  let html = `<div style="margin-bottom:24px;">
+    <div style="font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">🔄 Recorrentes e Parceladas</div>`;
+
+  if (templates.length === 0) {
+    html += `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center;color:var(--text3);font-size:13px;">Nenhuma conta recorrente ou parcelada</div>`;
+  } else {
+    html += `<div class="table-wrap"><table>
+      <thead><tr><th>Descrição</th><th>Categoria</th><th>Tipo</th><th>Dia Venc.</th><th>Valor</th><th>Forma</th><th>A partir de</th><th>Ações</th></tr></thead>
+      <tbody>${templates.map(c=>`<tr>
+        <td style="color:var(--text);font-weight:500">${catIcon(c.categoria)} ${c.descricao}</td>
+        <td class="muted">${c.categoria}</td>
+        <td><span class="badge ${c.parcelado?'badge-indicacao':'badge-ativo'}" style="font-size:10px;">${c.parcelado?`💳 ${c.numParcelas}x`:'🔄 Mensal'}</span></td>
+        <td class="muted">${c.diaVenc?`Todo dia ${c.diaVenc}`:'—'}</td>
+        <td class="gold">${c.valor?fmtMoeda(c.valor):'<span class="muted">Variável</span>'}</td>
+        <td class="muted">${c.forma||'—'}</td>
+        <td class="muted">${c.anoInicio?`${MESES_CONTAS[c.mesInicio]}/${c.anoInicio}`:'—'}</td>
+        <td><div class="row-actions">
+          <button class="btn btn-ghost btn-sm" onclick="editarPessoal('${c.id}')">Editar</button>
+          <button class="btn btn-danger btn-sm" onclick="excluirPessoal('${c.id}')">✕</button>
+        </div></td>
+      </tr>`).join('')}</tbody>
+    </table></div>`;
+  }
+  html += `</div><div>
+    <div style="font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">📋 Contas Avulsas</div>`;
+
+  if (avulsas.length === 0) {
+    html += `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center;color:var(--text3);font-size:13px;">Nenhuma conta avulsa cadastrada</div>`;
+  } else {
+    html += `<div class="table-wrap"><table>
+      <thead><tr><th>Descrição</th><th>Categoria</th><th>Vencimento</th><th>Valor</th><th>Forma</th><th>Status</th><th>Ações</th></tr></thead>
+      <tbody>${avulsas.map(c=>`<tr>
+        <td style="color:var(--text);font-weight:500">${catIcon(c.categoria)} ${c.descricao}</td>
+        <td class="muted">${c.categoria}</td>
+        <td class="${c.status==='VENCIDO'?'red':'muted'}">${c.vencimento?fmtDate(c.vencimento):'<span style="color:var(--amber);font-size:11px;">⚠ sem data</span>'}</td>
+        <td class="gold">${fmtMoeda(c.valor)}</td>
+        <td class="muted">${c.forma||'—'}</td>
+        <td><select class="status-select ${(c.status||'').toLowerCase().replace(' ','-')}" onchange="alterarStatusPessoal('${c.id}',this.value,this)">
+          <option value="A VENCER" ${c.status==='A VENCER'?'selected':''}>A VENCER</option>
+          <option value="PAGO" ${c.status==='PAGO'?'selected':''}>PAGO</option>
+          <option value="VENCIDO" ${c.status==='VENCIDO'?'selected':''}>VENCIDO</option>
+        </select></td>
+        <td><div class="row-actions">
+          <button class="btn btn-ghost btn-sm" onclick="editarPessoal('${c.id}')">Editar</button>
+          <button class="btn btn-danger btn-sm" onclick="excluirPessoal('${c.id}')">✕</button>
+        </div></td>
+      </tr>`).join('')}</tbody>
+    </table></div>`;
+  }
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+
+function abrirNovaPessoal() {
+  document.getElementById('pessoal-id-edit').value='';
+  document.getElementById('modal-pessoal-title').textContent='Nova Conta Pessoal';
+  ['pessoal-desc','pessoal-valor','pessoal-obs','pessoal-data-pag','pessoal-venc'].forEach(id=>{ document.getElementById(id).value=''; });
+  document.getElementById('pessoal-cat').value='Moradia';
+  document.getElementById('pessoal-forma').value='Pix';
+  document.getElementById('pessoal-status').value='A VENCER';
+  document.getElementById('pessoal-recorrente').value='nao';
+  document.getElementById('pessoal-dia-venc').value='';
+  const mes = parseInt(document.getElementById('pessoal-mes')?.value||new Date().getMonth()+1);
+  document.getElementById('pessoal-mes-inicio').value=mes;
+  document.getElementById('pessoal-ano-inicio').value='2026';
+  document.getElementById('pessoal-campo-mes-inicio').style.display='none';
+  document.getElementById('pessoal-campo-parcelas').style.display='none';
+  document.getElementById('pessoal-campo-dia').style.display='flex';
+  document.getElementById('pessoal-num-parcelas').value='';
+  document.getElementById('pessoal-termino-preview').textContent='Preencha os campos acima';
+  document.getElementById('modal-pessoal').classList.add('open');
+}
+
+function salvarPessoal() {
+  const desc  = document.getElementById('pessoal-desc').value.trim();
+  const valor = document.getElementById('pessoal-valor').value;
+  const venc  = document.getElementById('pessoal-venc').value;
+  const tipoRec = document.getElementById('pessoal-recorrente').value;
+  const isRec   = tipoRec === 'sim';
+  const isPar   = tipoRec === 'parcelado';
+  const status  = document.getElementById('pessoal-status').value;
+  if (!desc||!valor) { showToast('Preencha descrição e valor'); return; }
+  if (!isRec&&!isPar&&!venc) { showToast('Preencha a data de vencimento'); return; }
+  if (isPar&&!document.getElementById('pessoal-num-parcelas').value) { showToast('Informe o número de parcelas'); return; }
+
+  const d  = getPessoal();
+  const id = document.getElementById('pessoal-id-edit').value;
+  const conta = {
+    id: id||uid(),
+    descricao: desc,
+    categoria: document.getElementById('pessoal-cat').value,
+    valor: Number(valor),
+    vencimento: venc || null,
+    forma: document.getElementById('pessoal-forma').value,
+    status: (isRec||isPar) ? 'A VENCER' : status,
+    dataPagamento: document.getElementById('pessoal-data-pag').value,
+    obs: document.getElementById('pessoal-obs').value,
+    recorrente: isRec,
+    parcelado: isPar,
+    diaVenc: (isRec||isPar) ? Number(document.getElementById('pessoal-dia-venc').value)||null : null,
+    mesInicio: (isRec||isPar) ? Number(document.getElementById('pessoal-mes-inicio').value) : null,
+    anoInicio: (isRec||isPar) ? Number(document.getElementById('pessoal-ano-inicio').value) : null,
+    numParcelas: isPar ? Number(document.getElementById('pessoal-num-parcelas').value)||null : null,
+  };
+
+  if (id) { const idx=d.contas.findIndex(c=>c.id===id); if(idx>=0) d.contas[idx]=conta; }
+  else { d.contas.push(conta); }
+  savePessoal(d);
+  fecharModal('modal-pessoal');
+  renderPessoalDashboard();
+  if (document.getElementById('view-pessoal-lista').classList.contains('active')) renderPessoalLista();
+  showToast(id?'Conta atualizada!':'Conta cadastrada!');
+}
+
+function editarPessoal(id) {
+  const d = getPessoal();
+  const c = d.contas.find(x=>x.id===id);
+  if (!c) return;
+  document.getElementById('pessoal-id-edit').value=id;
+  document.getElementById('modal-pessoal-title').textContent='Editar Conta';
+  document.getElementById('pessoal-desc').value=c.descricao||'';
+  document.getElementById('pessoal-cat').value=c.categoria||'Outros';
+  document.getElementById('pessoal-valor').value=c.valor||'';
+  document.getElementById('pessoal-venc').value=c.vencimento||'';
+  // Garantir que campo vencimento está visível para conta avulsa
+  if (!c.recorrente && !c.parcelado) {
+    const rowVenc = document.getElementById('pessoal-venc').closest('.form-group').parentElement;
+    rowVenc.style.display = 'grid';
+  }
+  document.getElementById('pessoal-forma').value=c.forma||'Pix';
+  document.getElementById('pessoal-status').value=c.status||'A VENCER';
+  document.getElementById('pessoal-data-pag').value=c.dataPagamento||'';
+  document.getElementById('pessoal-obs').value=c.obs||'';
+  const tipoPVal = c.parcelado ? 'parcelado' : (c.recorrente ? 'sim' : 'nao');
+  document.getElementById('pessoal-recorrente').value=tipoPVal;
+  document.getElementById('pessoal-dia-venc').value=c.diaVenc||'';
+  document.getElementById('pessoal-mes-inicio').value=c.mesInicio||new Date().getMonth()+1;
+  document.getElementById('pessoal-ano-inicio').value=c.anoInicio||2026;
+  document.getElementById('pessoal-num-parcelas').value=c.numParcelas||'';
+  document.getElementById('pessoal-campo-mes-inicio').style.display=(c.recorrente||c.parcelado)?'grid':'none';
+  document.getElementById('pessoal-campo-parcelas').style.display=c.parcelado?'grid':'none';
+  document.getElementById('pessoal-campo-dia').style.display=c.recorrente?'flex':'none';
+  if (c.parcelado) atualizarTerminoPessoal();
+  document.getElementById('modal-pessoal').classList.add('open');
+}
+
+function excluirPessoal(id) {
+  if (!confirm('Confirma exclusão?')) return;
+  const d=getPessoal(); d.contas=d.contas.filter(c=>c.id!==id);
+  savePessoal(d); renderPessoalLista(); showToast('Conta excluída');
+}
+
+function alterarStatusPessoal(id, novoStatus, selectEl) {
+  const d=getPessoal(); const idx=d.contas.findIndex(c=>c.id===id);
+  if (idx<0) return;
+  d.contas[idx].status=novoStatus;
+  if (novoStatus==='PAGO'&&!d.contas[idx].dataPagamento)
+    d.contas[idx].dataPagamento=new Date().toISOString().split('T')[0];
+  savePessoal(d);
+  selectEl.className='status-select '+novoStatus.toLowerCase().replace(' ','-');
+  showToast('Status: '+novoStatus);
+}
+
+function resetarPessoal() {
+  if (!confirm('Apagar todos os dados pessoais?')) return;
+  localStorage.removeItem(PESSOAL_KEY);
+  renderPessoalDashboard();
+  showToast('Dados pessoais resetados!');
+}
+// ── SEED DATA (pré-carregamento) ──────────────────────────────────────────────
+const SEED_DATA = {"clientes": [{"id": "cli001", "status": "ATIVO", "tipo": "Direto", "nome": "Integrus Investimentos", "cpf": "42.290.665/0001-27", "tel": "81 995649888", "uf": "PE", "cidade": "Jaboatão dos Guararapes", "empresaParceiro": "", "consultor": "", "produto": "HS Consórcio", "credito": 500000, "meiaParc": "Sim", "posAssembleia": "Sim", "dataVenda": "2026-01-22", "dataAlocacao": "2026-01-22", "statusHS": "Alocado", "contrato": "Sim", "campanha": ""}, {"id": "cli002", "status": "ATIVO", "tipo": "Direto", "nome": "Integrus Investimentos", "cpf": "42.290.665/0001-27", "tel": "81 995649888", "uf": "PE", "cidade": "Jaboatão dos Guararapes", "empresaParceiro": "", "consultor": "", "produto": "HS Consórcio", "credito": 500000, "meiaParc": "Sim", "posAssembleia": "Sim", "dataVenda": "2026-01-22", "dataAlocacao": "2026-01-22", "statusHS": "Alocado", "contrato": "Sim", "campanha": ""}, {"id": "cli003", "status": "ATIVO", "tipo": "Indicação", "nome": "Josias Silva Santos", "cpf": "109.546.314-47", "tel": "83 996961808", "uf": "PB", "cidade": "Desterro", "empresaParceiro": "—", "consultor": "Carlos Aderbal", "produto": "HS Consórcio", "credito": 70000, "meiaParc": "Sim", "posAssembleia": "Sim", "dataVenda": "2026-01-26", "dataAlocacao": "2026-02-11", "statusHS": "Alocado", "contrato": "Sim", "campanha": ""}, {"id": "cli004", "status": "ATIVO", "tipo": "Indicação", "nome": "Maria Osanete Pereira da Cruz Gouveia", "cpf": "161.827.404-00", "tel": "83 999274096", "uf": "PB", "cidade": "Campina Grande", "empresaParceiro": "Shalom Imóveis", "consultor": "Afonso Oliveira", "produto": "HS Consórcio", "credito": 250000, "meiaParc": "Sim", "posAssembleia": "Sim", "dataVenda": "2026-02-19", "dataAlocacao": "2026-03-10", "statusHS": "Alocado", "contrato": "Sim", "campanha": ""}, {"id": "cli005", "status": "ATIVO", "tipo": "Direto", "nome": "Afonso Barbosa de Oliveira", "cpf": "086.835.104-09", "tel": "83 986645797", "uf": "PB", "cidade": "Campina Grande", "empresaParceiro": "", "consultor": "", "produto": "HS Consórcio", "credito": 500000, "meiaParc": "Sim", "posAssembleia": "Sim", "dataVenda": "2026-02-23", "dataAlocacao": "2026-02-23", "statusHS": "Alocado", "contrato": "Sim", "campanha": "Desconto 50% nas primeiras 4 parcelas — R$ 2.800,00"}, {"id": "cli006", "status": "ATIVO", "tipo": "Direto", "nome": "Rubens Tavares dos Santos Neto", "cpf": "048.081.494-51", "tel": "83 987997340", "uf": "PB", "cidade": "Campina Grande", "empresaParceiro": "", "consultor": "", "produto": "HS Consórcio", "credito": 200000, "meiaParc": "Sim", "posAssembleia": "Sim", "dataVenda": "2026-02-24", "dataAlocacao": "2026-02-24", "statusHS": "Alocado", "contrato": "Sim", "campanha": "Desconto 50% nas primeiras 3 parcelas — R$ 924,00"}, {"id": "cli007", "status": "ATIVO", "tipo": "Direto", "nome": "Silas Batista dos Santos", "cpf": "068.672.954-44", "tel": "83 982023355", "uf": "PB", "cidade": "Campina Grande", "empresaParceiro": "", "consultor": "", "produto": "HS Consórcio", "credito": 500000, "meiaParc": "Sim", "posAssembleia": "Sim", "dataVenda": "2026-02-24", "dataAlocacao": "2026-02-24", "statusHS": "Alocado", "contrato": "Sim", "campanha": ""}, {"id": "cli008", "status": "ATIVO", "tipo": "Indicação", "nome": "AMBSEED CONSULTORIA AMBIENTAL", "cpf": "46.064.086/0001-17", "tel": "83 996498889", "uf": "PB", "cidade": "Campina Grande", "empresaParceiro": "Shalom Imóveis", "consultor": "Afonso Oliveira", "produto": "HS Consórcio", "credito": 400000, "meiaParc": "Sim", "posAssembleia": "Sim", "dataVenda": "2026-03-11", "dataAlocacao": "2026-03-25", "statusHS": "Alocado", "contrato": "Sim", "campanha": ""}, {"id": "cli009", "status": "ATIVO", "tipo": "Indicação", "nome": "Amanda Laurentino Torquato", "cpf": "392.310.678-50", "tel": "83 996541717", "uf": "PB", "cidade": "Campina Grande", "empresaParceiro": "Shalom Imóveis", "consultor": "Afonso Oliveira", "produto": "HS Consórcio", "credito": 250000, "meiaParc": "Sim", "posAssembleia": "Sim", "dataVenda": "2026-03-23", "dataAlocacao": "2026-03-24", "statusHS": "Alocado", "contrato": "Sim", "campanha": "Desconto 40% na 1ª parcela — R$ 307,50"}], "parceiros": [{"id": "par001", "empresa": "Shalom Imóveis", "cnpj": "39.732.066/0001-01", "consultor": "Afonso Oliveira", "cpf": "086.835.104-09", "cargo": "Proprietário", "pct": 1.4, "tel": "83 986645797", "uf": "PB", "cidade": "Campina Grande", "status": "ATIVO"}, {"id": "par002", "empresa": "—", "cnpj": "", "consultor": "Carlos Aderbal", "cpf": "123.121.894-02", "cargo": "Parceiro Indicador", "pct": 1.2, "tel": "83 981965695", "uf": "PB", "cidade": "Desterro", "status": "ATIVO"}]};
+
+function initSeedData() {
+  const existing = localStorage.getItem(STORAGE_KEY);
+  if (!existing || existing === '{"clientes":[],"parceiros":[]}') {
+    saveData(SEED_DATA);
+    console.log('Dados iniciais carregados!');
+  }
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+initSeedData();
+initContasSeed();
+renderDashboard();
+</script>
+</body>
+</html>
