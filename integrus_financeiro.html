@@ -263,6 +263,24 @@ input::placeholder, textarea::placeholder { color:var(--text3); }
   .parcelas-grid { grid-template-columns:repeat(3,1fr); }
 }
 </style>
+
+<link rel="manifest" href="data:application/json,{
+  %22name%22: %22Integrus Financeiro%22,
+  %22short_name%22: %22Financeiro%22,
+  %22start_url%22: %22.%22,
+  %22display%22: %22standalone%22,
+  %22background_color%22: %22%230B1622%22,
+  %22theme_color%22: %22%230B1622%22,
+  %22icons%22: [{
+    %22src%22: %22https://raw.githubusercontent.com/Alexsandrabarros/crm-integrus/main/icon-192.png%22,
+    %22sizes%22: %22192x192%22,
+    %22type%22: %22image/png%22
+  }]
+}">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Integrus Financeiro">
 </head>
 <body>
 
@@ -3072,6 +3090,40 @@ function initSeedData() {
 initSeedData();
 initContasSeed();
 renderDashboard();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    const swContent = `
+      self.addEventListener('install', e => self.skipWaiting());
+      self.addEventListener('activate', e => e.waitUntil(clients.claim()));
+      self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));
+    `;
+    const blob = new Blob([swContent], {type: 'application/javascript'});
+    const swUrl = URL.createObjectURL(blob);
+    navigator.serviceWorker.register(swUrl);
+  });
+}
+
+// Botão de instalar PWA
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Mostrar botão de instalar
+  const btn = document.createElement('button');
+  btn.innerHTML = '📲 Instalar App';
+  btn.className = 'btn btn-gold';
+  btn.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,0.4);';
+  btn.onclick = async () => {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') btn.remove();
+    deferredPrompt = null;
+  };
+  document.body.appendChild(btn);
+});
 </script>
 </body>
 </html>
