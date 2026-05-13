@@ -1542,10 +1542,7 @@ function atualizarSubStatus() {
   document.getElementById('campo-reuniao').style.display = 'none';
 
   if (status === 'Fechado') {
-    subDiv.style.display = 'block';
     dataFechDiv.style.display = 'block';
-    const opts = SUBSTATUS[produto] || SUBSTATUS[''];
-    subSel.innerHTML = '<option value="">Selecionar...</option>' + opts.map(o => `<option value="${o}">${o}</option>`).join('');
   } else if (status === 'Negado') {
     motivoDiv.style.display = 'block';
   } else if (status === 'Agendada') {
