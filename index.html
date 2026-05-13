@@ -966,7 +966,7 @@
       </div>
     </div>
     <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:8px">
-      <div style="font-family:'Inter',sans-serif;font-size:30px;font-weight:700;color:var(--gold2)" id="dash-total-mes">R$ 0</div>
+      <div style="font-family:'Inter',sans-serif;font-size:30px;font-weight:700;color:var(--gold2);cursor:pointer" id="dash-total-mes" onclick="verFechamentosMes()" title="Ver fechamentos do mês">R$ 0</div>
       <div style="font-size:13px;color:var(--text3)" id="dash-meta-sub">de R$ 3.000.000</div>
       <div style="margin-left:auto;font-size:18px;font-weight:700" id="dash-pct-meta">0%</div>
     </div>
@@ -1037,9 +1037,15 @@
       style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text2);font-family:'Inter',sans-serif;font-size:13px;padding:8px 14px;width:100%;box-sizing:border-box;outline:none">
   </div>
 
-  <!-- Filtro parceiro com busca -->
-  <div style="margin-bottom:10px">
-    <select id="filtro-parceiro" onchange="aplicarFiltros()" style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text2);font-family:'Inter',sans-serif;font-size:13px;padding:8px 14px;width:100%;appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27 viewBox=%270 0 12 8%27%3E%3Cpath d=%27M1 1l5 5 5-5%27 stroke=%27%236b6864%27 stroke-width=%271.5%27 fill=%27none%27 stroke-linecap=%27round%27/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 14px center;outline:none">
+  <!-- Filtros produto + parceiro em linha -->
+  <div style="display:flex;gap:8px;margin-bottom:10px">
+    <select id="filtro-produto" onchange="renderIndicacoes()" style="flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text2);font-family:'Inter',sans-serif;font-size:13px;padding:8px 12px;appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27 viewBox=%270 0 12 8%27%3E%3Cpath d=%27M1 1l5 5 5-5%27 stroke=%27%236b6864%27 stroke-width=%271.5%27 fill=%27none%27 stroke-linecap=%27round%27/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 10px center;outline:none">
+      <option value="">Todos os produtos</option>
+      <option value="Consórcio HS">Consórcio HS</option>
+      <option value="Consórcio BB">Consórcio BB</option>
+      <option value="Carta contemplada">Carta contemplada</option>
+    </select>
+    <select id="filtro-parceiro" onchange="aplicarFiltros()" style="flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text2);font-family:'Inter',sans-serif;font-size:13px;padding:8px 12px;appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27 viewBox=%270 0 12 8%27%3E%3Cpath d=%27M1 1l5 5 5-5%27 stroke=%27%236b6864%27 stroke-width=%271.5%27 fill=%27none%27 stroke-linecap=%27round%27/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 10px center;outline:none">
       <option value="">Todos os parceiros</option>
     </select>
   </div>
@@ -2120,6 +2126,8 @@ function renderIndicacoes() {
     leads = leads.filter(l => l.parceiro === filtroParceiro || vinculados.includes(l.parceiro));
   }
   if (busca) leads = leads.filter(l => (l.nome||'').toLowerCase().includes(busca));
+  const filtroProduto = document.getElementById('filtro-produto')?.value || '';
+  if (filtroProduto) leads = leads.filter(l => l.produto === filtroProduto);
   const el = document.getElementById('lista-indicacoes');
 
   // Cards de resumo (quantidade + volume)
@@ -2264,6 +2272,67 @@ function irParaMes(ordem) {
   const btn = document.getElementById('btn-hoje');
   if (btn) btn.style.display = ehHoje ? 'none' : 'block';
   renderDashboard();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function verFechamentosMes() {
+  const d = getData();
+  const fechadosMes = d.leads.filter(l => {
+    if (l.status !== 'Fechado') return false;
+    let dt;
+    if (l.dataFechamento) {
+      dt = new Date(l.dataFechamento);
+    } else {
+      const hist = [...(l.historico || [])].reverse().find(h => h.status === 'Fechado');
+      if (!hist) return false;
+      dt = new Date(hist.data);
+    }
+    return dt.getMonth() === dashMes && dt.getFullYear() === dashAno;
+  });
+
+  const mesLabel = MESES_PT[dashMes] + ' ' + dashAno;
+
+  // Navegar para aba Indicações com filtro Fechado
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-indicacoes').classList.add('active');
+  document.querySelectorAll('.nav-btn')[2].classList.add('active');
+
+  filtroAtivo = 'Fechado';
+  document.querySelectorAll('#filtros-status .filtro-btn').forEach(b => {
+    b.classList.remove('active');
+    if (b.textContent.trim() === 'Fechado') b.classList.add('active');
+  });
+
+  popularFiltroParceiro();
+
+  const el = document.getElementById('lista-indicacoes');
+  const volTotal = fechadosMes.reduce((s, l) => s + (parseFloat(l.valor) || 0), 0);
+
+  const cardsResumo = `
+    <div style="display:flex;gap:10px;margin-bottom:14px">
+      <div style="flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;text-align:center">
+        <div style="font-size:11px;color:var(--text3);font-family:'Inter',sans-serif;text-transform:uppercase;letter-spacing:.08em;font-weight:500">Fechamentos em ${mesLabel}</div>
+        <div style="font-size:20px;font-weight:700;color:var(--gold2);font-family:'Inter',sans-serif">${fechadosMes.length}</div>
+      </div>
+      <div style="flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;text-align:center">
+        <div style="font-size:11px;color:var(--text3);font-family:'Inter',sans-serif;text-transform:uppercase;letter-spacing:.08em;font-weight:500">Volume total</div>
+        <div style="font-size:20px;font-weight:700;color:var(--gold2);font-family:'Inter',sans-serif">${brl(volTotal)}</div>
+      </div>
+    </div>`;
+
+  if (!fechadosMes.length) {
+    el.innerHTML = `${cardsResumo}<div class="empty"><div class="empty-icon">🏆</div><div class="empty-text">Nenhum fechamento em ${mesLabel}</div></div>`;
+  } else {
+    el.innerHTML = cardsResumo + fechadosMes
+      .sort((a, b) => {
+        const dtA = a.dataFechamento ? new Date(a.dataFechamento) : new Date(0);
+        const dtB = b.dataFechamento ? new Date(b.dataFechamento) : new Date(0);
+        return dtB - dtA;
+      })
+      .map(l => buildLeadCard(l, d)).join('');
+  }
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -2828,9 +2897,15 @@ function renderDashboard() {
   // Leads fechados no mês selecionado
   const fechadosMes = d.leads.filter(l => {
     if (l.status !== 'Fechado') return false;
-    const hist = (l.historico || []).find(h => h.status === 'Fechado');
-    if (!hist) return false;
-    const dt = new Date(hist.data);
+    // Prioridade: dataFechamento do lead, depois último registro Fechado no histórico
+    let dt;
+    if (l.dataFechamento) {
+      dt = new Date(l.dataFechamento);
+    } else {
+      const hist = [...(l.historico || [])].reverse().find(h => h.status === 'Fechado');
+      if (!hist) return false;
+      dt = new Date(hist.data);
+    }
     return dt.getMonth() === dashMes && dt.getFullYear() === dashAno;
   });
 
